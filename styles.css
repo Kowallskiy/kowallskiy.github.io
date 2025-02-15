@@ -1,0 +1,204 @@
+/* Global Reset & Basic Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    font-family: 'IBM Plex Mono', monospace; /* IBM Plex Mono */
+    background-color: #0f1923; /* Dark navy background from the reference */
+    color: #f2f2f2; 
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* HEADER with emblem */
+  .site-header {
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Make sure the emblem container uses flex to align items */
+  .emblem-container {
+    display: flex;
+    align-items: center;
+    /* Optionally add padding or margin if needed */
+    padding: 0.5rem;
+  }
+  
+  /* Style for the new header text */
+  .header-text {
+    color: rgb(169, 255, 252);  /* Change to your desired color */
+    font-size: 1rem; /* Adjust as necessary */
+    margin-left: 64.0rem; /* Space between the emblem and text */
+    font-weight: 600;
+  }
+  
+  
+  .emblem {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+  }
+  
+  /* HERO SECTION */
+  .hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    transform: translateY(-40px);
+  }
+  
+  .hero-content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  
+  /* Left Column: 1/3 */
+  .company-info {
+    flex: 1; /* 1 part */
+    padding-right: 2rem;
+  }
+  
+  /* Right Column: 2/3 */
+  .video-wrapper {
+    flex: 2; /* 2 parts */
+    position: relative; /* so we can position overlay inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Company Text */
+  .company-name {
+    font-size: 2.8rem;
+    font-weight: 600; /* 600 */
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .company-desc {
+    font-size: 1.1rem;
+    font-weight: 100;
+    line-height: 1.8;
+  }
+  
+  /* Preview Image */
+  .preview-image {
+    width: 100%;
+    max-width: 800px; /* You can adjust this if needed */
+    height: auto;
+    display: block;
+    object-fit: cover;
+    cursor: pointer; /* So user knows it's clickable */
+  }
+  
+  /* Play Overlay (Icon or text) */
+  .play-overlay {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* Center the overlay over the image */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    /* Adjust the background color, size, shape to your liking */
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 20, 35, 0.5);
+    border-radius: 50%;
+  }
+  
+  .play-symbol {
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+  
+  /* Embedded Video (once preview is replaced) */
+  .demo-video {
+    width: 100%;
+    height: 450px; /* or use max-width with auto height */
+    border: none;
+    background-color: #000;
+  }
+  
+  /* DETAILS SECTION */
+  .details-section {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .details-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .details-section p,
+  .details-section ul {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+  
+  .details-section ul {
+    list-style: inside square;
+  }
+  
+    /* Footer styling */
+  .site-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #0f1923;
+    color: #f2f2f2;
+    font-size: 0.9rem;
+  }
+  
+  .site-footer .contact-details {
+    margin-top: 0.5rem;
+  }
+  
+  .site-footer a.email-link {
+    color: inherit; /* Inherit the footer text color */
+    text-decoration: none;
+  }
+  
+  /* Hero section button styling */
+  .button-container {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .github-button {
+    display: block;           /* Make it block-level */
+    width: 100%;              /* Full width of its container */
+    padding: 0.5rem 1rem;
+    border: 1px solid rgb(247, 248, 249);
+    border-radius: 4px;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    background-color: rgb(26,44,57);  /* Explicit background color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;       /* Center the text */
+  }
+  
+  .github-button:hover {
+    background-color: #ffffff;          /* Change on hover */
+    color: rgb(26,44,57);
+  }
+  

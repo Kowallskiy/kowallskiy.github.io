@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My AI Trading Platform</title>
+
+  <!-- Google Fonts: IBM Plex Mono (example) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" 
+    rel="stylesheet"
+  />
+
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- HEADER with emblem/logo -->
+  <!-- <header class="site-header">
+    <div class="emblem-container"> -->
+      <!-- Replace 'emblem.png' with the actual path to your emblem image -->
+      <!-- <img src="emblem.png" alt="Company Emblem" class="emblem" />
+    </div>
+  </header> -->
+
+  <header class="site-header">
+    <div class="emblem-container">
+      <!-- Emblem Image -->
+      <img src="images/emblem.png" alt="Company Emblem" class="emblem" />
+      <!-- New header text -->
+      <span class="header-text">Dedicated to BNF</span>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <!-- Left Column: Company Info (1/3) -->
+      <div class="company-info">
+        <h1 class="company-name">Quantum Limitless</h1>
+        <p class="company-desc">
+          Quantum Limitless is an algorithmic trading application that lets you
+          build, backtest, and deploy your AI-powered trading strategies seamlessly.
+          No coding is required. Everything is executed automatically.
+        </p>
+        <!-- Button container for "My GitHub" button -->
+        <div class="button-container">
+            <a href="https://github.com/Kowallskiy" class="github-button" target="_blank">My GitHub</a>
+        </div>
+          
+      </div>
+
+      <!-- Right Column: Video Preview (2/3) -->
+      <div class="video-wrapper" id="videoWrapper">
+        <!-- Preview Image -->
+        <img src="images/preview.png" alt="Video Preview" class="preview-image" id="previewImage" />
+        <!-- Play Overlay (Icon or text) -->
+        <div class="play-overlay" id="playOverlay">
+          <!-- Symbol indicating "Play" -->
+          <span class="play-symbol">▶</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT DETAILS SECTION -->
+  <section class="details-section">
+    <h2>Application Overview</h2>
+    <p>
+      The application is designed to simplify the process of creating automated
+      trading strategies. You can easily:
+    </p>
+    <ul>
+      <li>Select an ML/AI model based on your requirements.</li>
+      <li>Build a unique portfolio of stocks or cryptocurrencies.</li>
+      <li>Design custom features and signals from the OHCLV data.</li>
+      <li>Train an ML/AI model on your custom dataset with your custom hyperparameters, which 
+        always guarantees unique results.
+      </li>
+      <li>Backtest your strategy on historical data.</li>
+      <li>Deploy a live trading AI model to real or paper trading accounts (Alpaca).</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <p>
+      The application has an intuitive interface for non-coders. Whether you are 
+      playing with different strategies or testing a long-term portfolio approach,
+       the app covers it all.
+    </p>
+
+    <h2>Technical Stack</h2>
+    <p>
+      Built using <strong>Python</strong>, <strong>PyTorch</strong>, <strong>Scikit-Learn</strong>,
+      <strong>Pandas</strong>, <strong>Numpy</strong>, <strong>Matplotlib</strong>,
+      <strong>Yfinance</strong>, <strong>Gradio</strong>, <strong>Zipline</strong>,
+      <strong>Pyfolio</strong>, <strong>Pyro</strong> (probabilistic programming),
+      <strong>Docker</strong>, <strong>Git</strong>, <strong>AWS</strong>.
+    </p>
+  </section>
+
+  <!-- FOOTER with year and contact info -->
+  <footer class="site-footer">
+    <p class="contact-details">
+        © 2025 | Contact: <a href="mailto:trane-101@yandex.ru" class="email-link">trane-101@yandex.ru</a>
+      &nbsp;|&nbsp; Telegram: @dan_surnin
+    </p>
+  </footer>
+
+  <!-- Minimal JavaScript to replace preview with a local video on click -->
+  <script>
+    const previewImage = document.getElementById('previewImage');
+    const playOverlay = document.getElementById('playOverlay');
+    const videoWrapper = document.getElementById('videoWrapper');
+
+    function loadVideo() {
+      // Replace the video wrapper content with a local video
+      videoWrapper.innerHTML = `
+        <video class="demo-video" controls autoplay>
+          <source src="demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+    }
+
+    // Listen for clicks on the preview image or the overlay
+    previewImage.addEventListener('click', loadVideo);
+    playOverlay.addEventListener('click', loadVideo);
+  </script>
+</body>
+</html>
