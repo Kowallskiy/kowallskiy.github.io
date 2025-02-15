@@ -35,7 +35,7 @@
   .header-text {
     color: rgb(169, 255, 252);  /* Change to your desired color */
     font-size: 1rem; /* Adjust as necessary */
-    margin-left: 64.0rem; /* Space between the emblem and text */
+    margin-left: 1.0rem; /* Space between the emblem and text */
     font-weight: 600;
   }
   
@@ -77,6 +77,22 @@
     align-items: center;
     justify-content: center;
   }
+
+  @media (max-width: 768px) {
+    .hero-content {
+      flex-direction: column;
+      align-items: center; /* centers the items horizontally */
+    }
+    .company-info {
+      text-align: center;
+      padding-right: 0;
+      margin-bottom: 1rem;
+    }
+    .video-wrapper {
+      width: 100%;
+    }
+  }
+  
   
   /* Company Text */
   .company-name {
@@ -200,5 +216,34 @@
   .github-button:hover {
     background-color: #ffffff;          /* Change on hover */
     color: rgb(26,44,57);
+  }
+  
+  .section-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 2rem;
+    text-transform: lowercase;
+    margin-bottom: 1rem;
+    /* Optional: add some spacing or a subtle bottom border if desired */
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e67e22;
+  }
+  
+  .header-path {
+    color: #e67e22; /* A vibrant color to mimic a command-like feel */
+  }
+  
+  .separator {
+    margin: 0 0.5rem;
+    color: #7f8c8d; /* A softer, contrasting shade for the dots */
+  }
+  
+  .header-title {
+    color: #f2f2f2; /* Use a light color so it stands out against your dark background */
+  }
+  
+  /* (Optional) Emphasis class for other important text */
+  .emphasize {
+    font-weight: bold;
+    color: rgb(169, 255, 252); /* Adjust to your preference */
   }
   
