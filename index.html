@@ -1,138 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quantum Limitless</title>
-
-  <!-- Google Fonts: IBM Plex Mono (example) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link 
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" 
-    rel="stylesheet"
-  />
-
-  <!-- Link to external CSS -->
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradiQuant</title>
+  <link rel="icon" type="image/x-icon" href="icon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- HEADER with emblem/logo -->
-  <!-- <header class="site-header">
-    <div class="emblem-container"> -->
-      <!-- Replace 'emblem.png' with the actual path to your emblem image -->
-      <!-- <img src="emblem.png" alt="Company Emblem" class="emblem" />
+  <div class="static-header" id="static-header">
+    <div class="header-content">
+      <span class="brand">TradiQuant</span>
+      <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn">Contact me</a>
     </div>
-  </header> -->
-
-  <header class="site-header">
-    <div class="emblem-container">
-      <!-- Emblem Image -->
-      <img src="images/emblem.png" alt="Company Emblem" class="emblem" />
-      <!-- New header text -->
-      <span class="header-text">武士の道</span>
+  </div>
+  <header class="header" id="main-header">
+    <div class="header-content">
+      <span class="brand">TradiQuant</span>
+      <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn">Contact me</a>
     </div>
   </header>
-
-  <!-- HERO SECTION -->
-  <section class="hero-section">
-    <div class="hero-content">
-      <!-- Left Column: Company Info (1/3) -->
-      <div class="company-info">
-        <h1 class="company-name">Quantum Limitless</h1>
-        <p class="company-desc">
-          Quantum Limitless is an algorithmic trading application that lets you
-          build, backtest, and deploy your AI-powered trading strategies seamlessly.
-          No coding is required. Everything is executed automatically.
-        </p>
-        <!-- Button container for "My GitHub" button -->
-        <div class="button-container">
-            <a href="https://github.com/Kowallskiy" class="github-button" target="_blank">My GitHub</a>
-        </div>
-          
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-text">
+      <span class="hero-line hero-line1">AI Trading Platform.</span>
+      <span class="hero-line hero-line2">Train AI models.</span>
+      <span class="hero-line hero-line3">Run backtests.</span>
+      <span class="hero-line hero-line4">Deploy for live trading.</span>
+    </div>
+    <div class="hero-sub">AND ALL WITHOUT WRITING A SINGLE LINE OF CODE.</div>
+  </section>
+  <section class="video-section">
+    <div class="video-badge">Prototype Demo</div>
+    <div class="video-frame">
+      <div class="video-overlay">
+        <span class="video-demo-label"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;"><circle cx="11" cy="11" r="11" fill="#3a5eff"/><polygon points="9,7 16,11 9,15" fill="#fff"/></svg>Demo</span>
       </div>
-
-      <!-- Right Column: Video Preview (2/3) -->
-      <div class="video-wrapper" id="videoWrapper">
-        <!-- Preview Image -->
-        <img src="images/preview.png" alt="Video Preview" class="preview-image" id="previewImage" />
-        <!-- Play Overlay (Icon or text) -->
-        <div class="play-overlay" id="playOverlay">
-          <!-- Symbol indicating "Play" -->
-          <span class="play-symbol">▶</span>
+      <div class="video-grid-overlay" id="video-grid-overlay">
+        <svg class="video-grid-svg" viewBox="0 0 100 56" preserveAspectRatio="none">
+          <!-- Vertical lines -->
+          <line x1="10" y1="0" x2="10" y2="56" />
+          <line x1="30" y1="0" x2="30" y2="56" />
+          <line x1="50" y1="0" x2="50" y2="56" />
+          <line x1="70" y1="0" x2="70" y2="56" />
+          <line x1="90" y1="0" x2="90" y2="56" />
+          <!-- Horizontal lines -->
+          <line x1="0" y1="14" x2="100" y2="14" />
+          <line x1="0" y1="28" x2="100" y2="28" />
+          <line x1="0" y1="42" x2="100" y2="42" />
+        </svg>
+      </div>
+      <img class="demo-gif-preview" id="demo-gif-preview" src="images/demo.jpg" alt="Demo preview gif" />
+      <video class="demo-video" id="demo-video" src="demo.mp4" controls></video>
+      <div class="video-predemo-overlay" id="video-predemo">
+        <button class="video-play-btn" id="video-play-btn" aria-label="Play demo video" tabindex="0">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="28" cy="28" r="28" fill="#3a5eff" fill-opacity="0.85"/>
+            <polygon points="23,18 40,28 23,38" fill="#fff"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+  <section class="info-section">
+    <div class="info-card">
+      <div class="info-columns">
+        <div class="info-left">
+          <div class="info-label">ABOUT THE PLATFORM</div>
+          <h2>All-in-one AI Trading Platform</h2>
+          <p>Train, backtest, and deploy AI trading strategies with ease. This application empowers you to build, analyze, and optimize your trading ideas—no coding required.</p>
+        </div>
+        <div class="info-right">
+          <ul class="stats-list">
+            <li class="stat-item">
+              <span class="stat-number">450+ assets</span>
+              <div class="stat-desc">supported stocks, crypto and currency pairs</div>
+            </li>
+            <li class="stat-divider"></li>
+            <li class="stat-item">
+              <span class="stat-number">50+ features</span>
+              <div class="stat-desc">to train your models</div>
+            </li>
+            <li class="stat-divider"></li>
+            <li class="stat-item">
+              <span class="stat-number">12 AI models</span>
+              <div class="stat-desc">and each highly customizable</div>
+            </li>
+            <li class="stat-item">
+                <span class="stat-number">AI Agents</span>
+                <div class="stat-desc">to help you analyze and improve your AI models and backtests</div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
-
-  <section class="details-section">
-    <h2 class="section-header">
-      <span class="header-path">/project_overview</span>
-    </h2>
-    <p>
-      The application is designed to <span class="emphasize">simplify</span> the process of creating automated
-      trading strategies. You can easily:
-    </p>
-    <ul>
-      <li>Select an ML/AI model based on your requirements.</li>
-      <li>Build a unique portfolio of stocks or cryptocurrencies.</li>
-      <li>Design custom features and signals from the OHCLV data.</li>
-      <li>Train an ML/AI model on your custom dataset with your custom hyperparameters, which 
-        always guarantees unique results.
-      </li>
-      <li>Backtest your strategy on historical data.</li>
-      <li>Deploy a live trading AI model to real or paper trading accounts (Alpaca).</li>
-    </ul>
-    
-    <h2 class="section-header">
-      <span class="header-path">/key_features</span>
-    </h2>
-    <p>
-      The application has an intuitive interface for <span class="emphasize">non-coders</span>. 
-      Whether you are playing with different strategies or testing a long-term portfolio approach,
-      the app covers it all.
-    </p>
-
-    <h2 class="section-header">
-      <span class="header-path">/technical_stack</span>
-    </h2>
-    <p>
-      Built using <strong>Python</strong>, <strong>PyTorch</strong>, <strong>Scikit-Learn</strong>,
-      <strong>Pandas</strong>, <strong>Numpy</strong>, <strong>Matplotlib</strong>,
-      <strong>Yfinance</strong>, <strong>Gradio</strong>, <strong>Zipline</strong>,
-      <strong>Pyfolio</strong>, <strong>Pyro</strong> (probabilistic programming),
-      <strong>Docker</strong>, <strong>Git</strong>, <strong>AWS</strong>.
-    </p>
-
+  <section class="different-section">
+    <div class="different-columns">
+      <div class="different-left">
+        <div class="info-label">WHY THIS PLATFORM IS UNIQUE</div>
+        <h2>Every deployment is unique.<br>Every model is yours.</h2>
+        <p>This platform ensures that every AI model you train is one-of-a-kind, thanks to a very low level of models' customization and a vast feature set. Deploy seamlessly to brokers like Alpaca, and enjoy fully automated, reproducible pipelines. Your strategies are never generic—they're as unique as your ideas.</p>
+      </div>
+      <div class="different-right">
+        <ul class="different-stats-list">
+          <li class="different-stat-item">
+            <span class="different-stat-number">100%</span>
+            <span class="different-stat-label">Customizable pipelines</span>
+            <div class="different-stat-desc">from data to deployment</div>
+          </li>
+          <li class="different-stat-divider"></li>
+          <li class="different-stat-item">
+            <span class="different-stat-number">Infinity</span>
+            <span class="different-stat-label">Unique model/strategy combos</span>
+            <div class="different-stat-desc">no two runs are the same</div>
+          </li>
+          <li class="different-stat-divider"></li>
+          <li class="different-stat-item">
+            <span class="different-stat-number">Alpaca</span>
+            <span class="different-stat-label">Broker integration</span>
+            <div class="different-stat-desc">deploy live in seconds</div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </section>
-
-  <!-- FOOTER with year and contact info -->
   <footer class="site-footer">
-    <p class="contact-details">
-        © 2025 | Contact: <a href="mailto:trane-101@yandex.ru" class="email-link">trane-101@yandex.ru</a>
-      &nbsp;|&nbsp; Telegram: @dan_surnin
-    </p>
+    © TradiQuant 2025 | Built by Denis Surnin | Telegram: @dan_surnin
   </footer>
-
-  <!-- Minimal JavaScript to replace preview with a local video on click -->
   <script>
-    const previewImage = document.getElementById('previewImage');
-    const playOverlay = document.getElementById('playOverlay');
-    const videoWrapper = document.getElementById('videoWrapper');
-
-    function loadVideo() {
-      // Replace the video wrapper content with a local video
-      videoWrapper.innerHTML = `
-        <video class="demo-video" controls autoplay>
-          <source src="demo.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      `;
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('main-header');
+    const staticHeader = document.getElementById('static-header');
+    if (window.scrollY > 40) {
+      header.classList.add('header-visible');
+      staticHeader.classList.add('static-header-hide');
+    } else {
+      header.classList.remove('header-visible');
+      staticHeader.classList.remove('static-header-hide');
     }
-
-    // Listen for clicks on the preview image or the overlay
-    previewImage.addEventListener('click', loadVideo);
-    playOverlay.addEventListener('click', loadVideo);
+  });
+  // Video predemo overlay logic
+  const predemo = document.getElementById('video-predemo');
+  const playBtn = document.getElementById('video-play-btn');
+  const video = document.getElementById('demo-video');
+  const gridOverlay = document.getElementById('video-grid-overlay');
+  const gifPreview = document.getElementById('demo-gif-preview');
+  if (predemo && playBtn && video) {
+    playBtn.addEventListener('click', function() {
+      predemo.style.display = 'none';
+      if(gridOverlay) gridOverlay.classList.add('hide');
+      if(gifPreview) gifPreview.style.display = 'none';
+      video.play();
+    });
+    video.addEventListener('play', function() {
+      predemo.style.display = 'none';
+      if(gridOverlay) gridOverlay.classList.add('hide');
+      if(gifPreview) gifPreview.style.display = 'none';
+    });
+    video.addEventListener('pause', function() {
+      if(video.currentTime === 0 && gridOverlay) gridOverlay.classList.remove('hide');
+      if(video.currentTime === 0 && gifPreview) gifPreview.style.display = '';
+    });
+  }
+  // Animate stats in 'WHY THIS PLATFORM IS UNIQUE' section
+  const statItems = document.querySelectorAll('.different-stat-item');
+  const observer = new window.IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      } else {
+        entry.target.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.3 });
+  statItems.forEach(item => observer.observe(item));
   </script>
 </body>
-</html>
+</html> 
