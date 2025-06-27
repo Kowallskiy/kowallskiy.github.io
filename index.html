@@ -131,6 +131,15 @@
   <footer class="site-footer">
     © TradiQuant 2025 | Built by Denis Surnin | Telegram: @dan_surnin
   </footer>
+  <!-- Modal for Telegram contact -->
+  <div id="telegram-modal" class="telegram-modal">
+    <div class="telegram-modal-content">
+      <span class="telegram-modal-close" id="telegram-modal-close">&times;</span>
+      <h3>Contact me on Telegram</h3>
+      <p>@dan_surnin</p>
+      <a href="https://t.me/dan_surnin" target="_blank" class="telegram-link-btn">Link to Telegram</a>
+    </div>
+  </div>
   <script>
   window.addEventListener('scroll', function() {
     const header = document.getElementById('main-header');
@@ -178,6 +187,24 @@
     });
   }, { threshold: 0.3 });
   statItems.forEach(item => observer.observe(item));
+  // Modal logic for Contact me
+  const contactBtns = document.querySelectorAll('.contact-btn');
+  const telegramModal = document.getElementById('telegram-modal');
+  const telegramModalClose = document.getElementById('telegram-modal-close');
+  contactBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      telegramModal.style.display = 'flex';
+    });
+  });
+  telegramModalClose.addEventListener('click', function() {
+    telegramModal.style.display = 'none';
+  });
+  window.addEventListener('click', function(e) {
+    if (e.target === telegramModal) {
+      telegramModal.style.display = 'none';
+    }
+  });
   </script>
 </body>
 </html> 
