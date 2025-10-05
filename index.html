@@ -422,6 +422,173 @@
   })();
   </script>
 
+  <!-- ======= First-person trading-focused technical article (replace previous article block) ======= -->
+  <section class="tq-article tq-article--dark" id="tq-article" aria-labelledby="tq-article-title" style="padding:44px 18px;">
+    <!-- MathJax loader (safe if MathJax not already loaded) -->
+    <script>
+      if (!window.MathJax) {
+        window.MathJax = {
+          tex: {
+            inlineMath: [['\\(','\\)'], ['$', '$']],
+            displayMath: [['$$','$$']],
+            processEscapes: true
+          },
+          svg: { fontCache: 'global' },
+          options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+        };
+        (function(){ var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'; s.async=true; document.head.appendChild(s); })();
+      }
+    </script>
+
+    <div class="container" style="max-width:760px;margin:0 auto;font-family:Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
+      <h2 id="tq-article-title" style="color: #ffffff; margin:0 0 8px 0; font-size:28px;">What I implemented: BNNs for trading — ELBO, SBC, and Marginals</h2>
+      <p style="margin:0 0 18px 0; color: #cbd5e1; font-size:15px;">
+        This section describes decisions I made while building TradiQuant’s probabilistic modeling pipeline for trading: how I train Bayesian Neural Networks with Pyro + SVI, how I validate them with Simulation-Based Calibration (SBC), and why I inspect marginal posteriors before live deployment.
+      </p>
+
+      <!-- 1. ELBO -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">1. ELBO — what I optimize and why</h3>
+        <p style="color:#cbd5e1; margin-bottom:10px;">
+          I train Bayesian models with Pyro SVI. Concretely, I maximize the ELBO — this is the objective used by SVI and is central to how I trade uncertainty-aware signals.
+        </p>
+
+        <div class="formula-card" style="padding:14px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.03);">
+          <div style="color:#bfe0ff;font-weight:600;font-size:13px;margin-bottom:8px;">ELBO (definition)</div>
+          <div class="math display" style="font-size:18px;color:#ffffff;line-height:1.4;">
+            $$\mathrm{ELBO}(q)=\mathbb{E}_{q(\mathbf z)}\big[\log p(\mathbf x,\mathbf z)-\log q(\mathbf z)\big]$$
+          </div>
+        </div>
+
+        <div class="formula-card" style="padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);">
+          <div style="color:#bfe0ff;font-weight:600;font-size:13px;margin-bottom:8px;">Equivalent, optimization view</div>
+          <div class="math display" style="font-size:18px;color:#ffffff;">
+            $$\mathrm{ELBO}(q)=\mathbb{E}_{q(\mathbf z)}[\log p(\mathbf x\mid\mathbf z)]-\mathrm{KL}\big(q(\mathbf z)\,\|\,p(\mathbf z)\big).$$
+          </div>
+        </div>
+
+        <p class="note" style="margin-top:12px;color:#a8b3c7;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;">
+          Practically: I use Adam + learning-rate schedule, monitor ELBO and held-out predictive metrics (sharpe/IC for trading signals) during training. ELBO alone doesn't guarantee good trading performance, so I always pair it with downstream backtest evaluations.
+        </p>
+      </div>
+
+      <!-- 2. SBC -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">2. How I use SBC to catch systematic bias</h3>
+        <p style="color:#cbd5e1;">
+          Variational approximations can be biased (often underdispersed). I apply Simulation-Based Calibration (SBC) as a diagnostic before trusting a model for live trading.
+        </p>
+        <ol style="color:#cbd5e1; margin-left:16px;">
+          <li>Draw a true parameter $\theta^\ast \sim p(\theta)$ from the prior I used for trading experiments.</li>
+          <li>Simulate synthetic returns $y \sim p(y\mid\theta^\ast)$ using the same data pipeline and feature preprocessing as production.</li>
+          <li>Fit SVI on $y$, sample $M$ draws $\{\theta^{(m)}\}_{m=1}^M$ from the guide and compute the rank:</li>
+        </ol>
+
+        <div class="formula-card" style="margin-top:10px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
+          <div class="math display" style="font-size:18px;color:#ffffff;">$$\mathrm{rank}_s=\#\{\,m:\ \theta^{(m)}<\theta^\ast\,\}.$$</div>
+        </div>
+
+        <p style="color:#cbd5e1;margin-top:12px;">I repeat this for S simulated datasets. For models I ship to backtests, the SBC histogram must be approximately uniform — otherwise I rework the guide (richer family or flows) or move to MCMC for verification.</p>
+
+        <figure style="margin-top:14px;">
+          <img src="images/sbc.png" alt="SBC histogram" style="width:100%;border-radius:8px;box-shadow:0 12px 40px rgba(3,6,23,0.6);" />
+          <figcaption style="color:#9fb4cc;font-size:13px;margin-top:8px;">SBC ranks histogram from one of my internal tests — target: uniform.</figcaption>
+        </figure>
+      </div>
+
+      <!-- 3. Analytic check -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">3. Analytic normal–normal check I use as a unit test</h3>
+        <p style="color:#cbd5e1;">Before running expensive experiments on time series, I validate the pipeline on conjugate models where the posterior is known.</p>
+
+        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
+          <div class="math display" style="font-size:18px;color:#ffffff;">
+  $$
+  \frac{1}{\sigma_{\mathrm{post}}^2}=\frac{1}{\sigma_0^2}+\frac{1}{\sigma^2},\qquad
+  m_{\mathrm{post}}=\sigma_{\mathrm{post}}^2\Big(\frac{\mu_0}{\sigma_0^2}+\frac{y}{\sigma^2}\Big).
+  $$
+          </div>
+        </div>
+
+        <p style="color:#cbd5e1;margin-top:12px;">I compare SVI's posterior mean/variance to these formulas as an automated test in CI — it quickly flags bugs in the model or guide implementation.</p>
+      </div>
+
+      <!-- 4. Marginals -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">4. Why I inspect marginal posteriors for trading parameters</h3>
+        <p style="color:#cbd5e1;">Trading models often have hierarchical and funnel structures. I look at marginals to understand scale and identify problematic geometry.</p>
+
+        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
+          <div class="math display" style="font-size:18px;color:#ffffff;">$$p(\theta_1\mid y)=\int p(\theta_1,\theta_2,\dots,\theta_D\mid y)\ d\theta_2\cdots d\theta_D.$$</div>
+        </div>
+
+        <figure style="margin-top:12px;">
+          <img src="images/margin.png" alt="Marginal posterior" style="width:100%;border-radius:8px;"/>
+          <figcaption style="color:#9fb4cc;font-size:13px;margin-top:8px;">Example marginal posterior I inspect before trusting weight priors or hierarchical scales.</figcaption>
+        </figure>
+
+        <p style="color:#cbd5e1;margin-top:12px;">If the marginal for a volatility scale is extremely skewed or multimodal, I prefer to revise priors or test heavier-tailed alternatives to avoid fragile live behavior.</p>
+      </div>
+
+      <!-- 5. Priors & weight scaling (trading-specific) -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">5. Priors & neural weight scaling — what I set for trading</h3>
+        <p style="color:#cbd5e1;">Key practical choices I use in TradiQuant to get stable predictive distributions for returns:</p>
+        <ul style="color:#cbd5e1;">
+          <li><strong>Target</strong>: standardized one-step return $y=\Delta p(t,t+1)$ (standardize per ticker). I use $\sigma\sim\mathrm{HalfNormal}(1)$ as a default observation noise prior.</li>
+          <li><strong>Hierarchical priors</strong>: group means $\mu_i$ per ticker with a hyperprior; I initialize scale using empirical std across tickers.</li>
+          <li><strong>Weight priors</strong>: with inputs standardized, I initialize dense layer weights as $w_i\sim\mathcal{N}(0,1/\sqrt{N_{\mathrm{in}}})$ so pre-activation variance is ≈1:</li>
+        </ul>
+
+        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
+          <div class="math display" style="font-size:18px;color:#ffffff;">$$\mathrm{Var}\Big(\sum_{i=1}^N w_i x_i\Big)\approx\sum_i \mathrm{Var}(w_i x_i)=N\cdot\frac{1}{N}\cdot 1=1.$$</div>
+        </div>
+
+        <p style="color:#cbd5e1;margin-top:12px;">These choices keep predictive scales realistic and prevent extreme simulated returns that would break backtests.</p>
+      </div>
+
+      <!-- 6. Simulated vs real check -->
+      <div style="margin-top:26px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">6. I always compare simulated vs real returns</h3>
+        <p style="color:#cbd5e1;">After I define the generative model and priors I run forward simulations and compare distributional support with real standardized returns. This prevents models that produce unrealistic tail mass from reaching deployment.</p>
+
+        <p class="note" style="color:#cbd5e1;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:12px;">
+          If simulated returns have a larger spread than historical data (or the support is shifted), I adjust priors or feature preprocessing until the predictive simulations align with reality.
+        </p>
+      </div>
+
+      <!-- 8. Closing: deployment note -->
+      <div style="margin-top:26px;margin-bottom:8px;">
+        <h3 style="color:#e6eef8;margin-bottom:6px;">7. From validation to deployment</h3>
+        <p style="color:#cbd5e1;">
+          Models that pass these checks are further validated by backtests in TradiQuant; only then I allow deployment to Alpaca (paper mode first). This staged workflow — analytic checks, SBC, simulated vs real comparisons, and backtests — reduces the risk of shipping models that look good on ELBO alone but fail in execution.
+        </p>
+      </div>
+    </div>
+
+    <!-- MathJax typeset trigger -->
+    <script>
+      (function waitForMathJax(){
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise().catch(function(err){ console.warn('MathJax typeset failed', err); });
+        } else {
+          setTimeout(waitForMathJax, 300);
+        }
+      })();
+    </script>
+
+    <style>
+      .tq-article--dark { background: linear-gradient(180deg,#061025 0%, rgba(6,16,37,0.6) 100%); border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02); }
+      .formula-card { transition: transform .12s ease, box-shadow .12s ease; }
+      .formula-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.6); }
+      .tq-article pre { font-size:13px; line-height:1.45; }
+      .tq-article img { max-width:100%; display:block; }
+    </style>
+  </section>
+  <!-- ======= End first-person article ======= -->
+
+
+
 
   <footer class="site-footer">
     © TradiQuant 2025 | Built by Denis Surnin | Telegram: @dan_surnin
