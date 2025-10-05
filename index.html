@@ -67,6 +67,82 @@
 
     .tq-modal [tabindex="-1"]:focus { outline: none; }
   </style>
+  <!-- Responsive math: safe for desktop, phone-friendly -->
+<style>
+  /* keep desktop unchanged; only small-screen adjustments kick in below */
+  .formula-card {
+    overflow-x: auto;                 /* allow horizontal scroll on narrow screens */
+    -webkit-overflow-scrolling: touch;/* smooth scrolling on iOS */
+    min-width: 0;                     /* flexbox safety */
+    box-sizing: border-box;
+  }
+
+  /* Make MathJax SVGs respect container width */
+  .math.display svg,
+  .math.display .mjx-svg {
+    max-width: 100% !important;
+    height: auto !important;
+    width: auto !important;
+    display: block;
+  }
+
+  /* Slightly smaller math on tiny screens so more fits */
+  @media (max-width: 640px) {
+    .math.display { font-size: 16px; } /* only affects phones */
+    .formula-card { padding: 10px; }
+    /* optional: thin scrollbar for horizontal scroll */
+    .formula-card::-webkit-scrollbar { height: 6px; }
+    .formula-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 6px; }
+  }
+</style>
+
+<script>
+  (function adaptMath(){
+    // Safety: do nothing if no math nodes found
+    function apply() {
+      const nodes = document.querySelectorAll('.math.display');
+      if (!nodes.length) return;
+      nodes.forEach(el => {
+        el.style.display = 'block';
+        el.style.boxSizing = 'border-box';
+        // handle MathJax-produced SVG
+        const svg = el.querySelector('svg');
+        if (svg) {
+          svg.style.maxWidth = '100%';
+          svg.style.width = 'auto';
+          svg.style.height = 'auto';
+          svg.setAttribute('preserveAspectRatio', 'xMinYMid meet');
+        }
+        const mjx = el.querySelector('.mjx-svg');
+        if (mjx) {
+          mjx.style.maxWidth = '100%';
+          mjx.style.width = 'auto';
+          mjx.style.height = 'auto';
+        }
+      });
+    }
+
+    // Run after MathJax has typeset (if present)
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise().then(apply).catch(()=>{ apply(); });
+      // Also attempt again after MathJax startup if available
+      if (MathJax.startup && MathJax.startup.promise) {
+        MathJax.startup.promise.then(()=>MathJax.typesetPromise().then(apply).catch(()=>{}));
+      }
+    } else {
+      // If MathJax not present, apply once on load
+      window.addEventListener('load', apply);
+    }
+
+    // Debounced resize to reapply layout on orientation change / narrow->wide
+    let _t = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(_t);
+      _t = setTimeout(apply, 120);
+    });
+  })();
+  </script>
+
 </head>
 <body>
   <div class="static-header" id="static-header">
@@ -196,7 +272,7 @@
       <div class="tq-heading">
         <div class="tq-kicker">How it works</div>
         <h2 id="tq-howitworks-title">Train. Backtest. Deploy — in 8 simple steps.</h2>
-        <p class="tq-lead">From personalized onboarding to live deployment — a fully managed pipeline that removes engineering friction so you can focus on ideas and risk management.</p>
+        <p class="tq-lead">From personalized onboarding to live deployment — a fully managed pipeline that removes engineering friction so you can focus on ideas and risk management. Click on a step to view more details.</p>
       </div>
 
       <div class="tq-steps-grid" role="list">
@@ -287,10 +363,6 @@
             <div class="tq-step-meta">Step 6</div>
             <h3 id="tq-step6-title">Backtest analysis & PDF report</h3>
             <p>Interactive dashboards + an AI-written executive summary. Export a professional PDF report with full metrics and trade logs for due-diligence or compliance.</p>
-            <div class="tq-report-actions">
-              <button class="tq-btn tq-btn-primary" onclick="location.href='#'">View report</button>
-              <button class="tq-btn" onclick="location.href='#'">Download PDF</button>
-            </div>
             <img src="images/step_6.jpg" alt="Backtest report example" class="tq-step-img" />
           </div>
         </article>
