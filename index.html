@@ -66,6 +66,38 @@
     .tq-step-card.tq-active { outline: 2px solid rgba(58,94,255,0.12); box-shadow: 0 20px 50px rgba(58,94,255,0.06); }
 
     .tq-modal [tabindex="-1"]:focus { outline: none; }
+    
+    /* Language Switcher Styles */
+    .lang-switcher {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .lang-btn {
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .lang-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+    }
+    .lang-btn.active {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.4);
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
   </style>
   <!-- Responsive math: safe for desktop, phone-friendly -->
 <style>
@@ -148,32 +180,44 @@
   <div class="static-header" id="static-header">
     <div class="header-content">
       <span class="brand">TradiQuant</span>
-      <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn">Contact me</a>
+      <!-- <div class="header-controls">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+        <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn" data-i18n="contact">Contact me</a>
+      </div> -->
     </div>
   </div>
   <header class="header" id="main-header">
     <div class="header-content">
       <span class="brand">TradiQuant</span>
-      <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn">Contact me</a>
+      <div class="header-controls">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+        <a href="https://t.me/dan_surnin" target="_blank" class="contact-btn" data-i18n="contact">Contact me</a>
+      </div>
     </div>
   </header>
 
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-text">
-      <span class="hero-line hero-line1">AI Trading Platform.</span>
-      <span class="hero-line hero-line2">Train AI models.</span>
-      <span class="hero-line hero-line3">Run backtests.</span>
-      <span class="hero-line hero-line4">Deploy for live trading.</span>
+      <span class="hero-line hero-line1" data-i18n="hero.line1">AI Trading Platform</span>
+      <span class="hero-line hero-line2" data-i18n="hero.line2">Train AI models</span>
+      <span class="hero-line hero-line3" data-i18n="hero.line3">Run backtests</span>
+      <span class="hero-line hero-line4" data-i18n="hero.line4">Deploy for live trading</span>
     </div>
-    <div class="hero-sub">AND ALL WITHOUT WRITING A SINGLE LINE OF CODE.</div>
+    <div class="hero-sub" data-i18n="hero.sub">AND ALL WITHOUT WRITING A SINGLE LINE OF CODE</div>
   </section>
 
   <section class="video-section">
-    <div class="video-badge">Prototype Demo</div>
+    <div class="video-badge" data-i18n="video.badge">Prototype Demo</div>
     <div class="video-frame">
       <div class="video-overlay">
-        <span class="video-demo-label"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;"><circle cx="11" cy="11" r="11" fill="#3a5eff"/><polygon points="9,7 16,11 9,15" fill="#fff"/></svg>Demo</span>
+        <span class="video-demo-label"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;"><circle cx="11" cy="11" r="11" fill="#3a5eff"/><polygon points="9,7 16,11 9,15" fill="#fff"/></svg><span data-i18n="video.demo">Demo</span></span>
       </div>
       <div class="video-grid-overlay" id="video-grid-overlay">
         <svg class="video-grid-svg" viewBox="0 0 100 56" preserveAspectRatio="none">
@@ -206,29 +250,29 @@
     <div class="info-card">
       <div class="info-columns">
         <div class="info-left">
-          <div class="info-label">ABOUT THE PLATFORM</div>
-          <h2>All-in-one AI Trading Platform</h2>
-          <p>Train, backtest, and deploy AI trading strategies with ease. This application empowers you to build, analyze, and optimize your trading ideas—no coding required.</p>
+          <div class="info-label" data-i18n="info.label">ABOUT THE PLATFORM</div>
+          <h2 data-i18n="info.title">All-in-one AI Trading Platform</h2>
+          <p data-i18n="info.description">Train, backtest, and deploy AI trading strategies with ease. This application empowers you to build, analyze, and optimize your trading ideas—no coding required.</p>
         </div>
         <div class="info-right">
           <ul class="stats-list">
             <li class="stat-item">
               <span class="stat-number">450+ assets</span>
-              <div class="stat-desc">supported stocks, crypto and currency pairs</div>
+              <div class="stat-desc" data-i18n="stats.assets">supported stocks, crypto and currency pairs</div>
             </li>
             <li class="stat-divider"></li>
             <li class="stat-item">
               <span class="stat-number">50+ features</span>
-              <div class="stat-desc">to train your models</div>
+              <div class="stat-desc" data-i18n="stats.features">to train your models</div>
             </li>
             <li class="stat-divider"></li>
             <li class="stat-item">
               <span class="stat-number">19 AI models</span>
-              <div class="stat-desc">and each highly customizable</div>
+              <div class="stat-desc" data-i18n="stats.models">and each highly customizable</div>
             </li>
             <li class="stat-item">
                 <span class="stat-number">AI Agents</span>
-                <div class="stat-desc">to help you analyze and improve your AI models and backtests</div>
+                <div class="stat-desc" data-i18n="stats.agents">to help you analyze and improve your AI models and backtests</div>
             </li>
           </ul>
         </div>
@@ -239,28 +283,28 @@
   <section class="different-section">
     <div class="different-columns">
       <div class="different-left">
-        <div class="info-label">WHY THIS PLATFORM IS UNIQUE</div>
-        <h2>Every deployment is unique.<br>Every model is yours.</h2>
-        <p>This platform ensures that every AI model you train is one-of-a-kind, thanks to a very low level of models' customization and a vast feature set. Deploy seamlessly to brokers like Alpaca, and enjoy fully automated, reproducible pipelines. Your strategies are never generic—they're as unique as your ideas.</p>
+        <div class="info-label" data-i18n="different.label">WHY THIS PLATFORM IS UNIQUE</div>
+        <h2 data-i18n="different.title">Every deployment is unique.<br>Every model is yours.</h2>
+        <p data-i18n="different.description">This platform ensures that every AI model you train is one-of-a-kind, thanks to a very low level of models' customization and a vast feature set. Deploy seamlessly to brokers like Alpaca, and enjoy fully automated, reproducible pipelines. Your strategies are never generic—they're as unique as your ideas.</p>
       </div>
       <div class="different-right">
         <ul class="different-stats-list">
           <li class="different-stat-item">
             <span class="different-stat-number">100%</span>
-            <span class="different-stat-label">Customizable pipelines</span>
-            <div class="different-stat-desc">from data to deployment</div>
+            <span class="different-stat-label" data-i18n="different.stat1.label">Customizable pipelines</span>
+            <div class="different-stat-desc" data-i18n="different.stat1.desc">from data to deployment</div>
           </li>
           <li class="different-stat-divider"></li>
           <li class="different-stat-item">
             <span class="different-stat-number">Infinity</span>
-            <span class="different-stat-label">Unique model/strategy combos</span>
-            <div class="different-stat-desc">no two runs are the same</div>
+            <span class="different-stat-label" data-i18n="different.stat2.label">Unique model/strategy combos</span>
+            <div class="different-stat-desc" data-i18n="different.stat2.desc">no two runs are the same</div>
           </li>
           <li class="different-stat-divider"></li>
           <li class="different-stat-item">
             <span class="different-stat-number">Alpaca</span>
-            <span class="different-stat-label">Broker integration</span>
-            <div class="different-stat-desc">deploy live in seconds</div>
+            <span class="different-stat-label" data-i18n="different.stat3.label">Broker integration</span>
+            <div class="different-stat-desc" data-i18n="different.stat3.desc">deploy live in seconds</div>
           </li>
         </ul>
       </div>
@@ -270,9 +314,9 @@
   <section class="tq-howitworks" id="tq-howitworks" aria-labelledby="tq-howitworks-title">
     <div class="tq-container">
       <div class="tq-heading">
-        <div class="tq-kicker">How it works</div>
-        <h2 id="tq-howitworks-title">Train. Backtest. Deploy — in 8 simple steps.</h2>
-        <p class="tq-lead">From personalized onboarding to live deployment — a fully managed pipeline that removes engineering friction so you can focus on ideas and risk management. Click on a step to view more details.</p>
+        <div class="tq-kicker" data-i18n="howitworks.kicker">How it works</div>
+        <h2 id="tq-howitworks-title" data-i18n="howitworks.title">Train. Backtest. Deploy — in 8 simple steps.</h2>
+        <p class="tq-lead" data-i18n="howitworks.lead">From personalized onboarding to live deployment — a fully managed pipeline that removes engineering friction so you can focus on ideas and risk management. Click on a step to view more details.</p>
       </div>
 
       <div class="tq-steps-grid" role="list">
@@ -283,8 +327,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 0</div>
-            <h3 id="tq-step0-title">Personalized onboarding</h3>
-            <p>Answer a few guided questions (goals, experience, risk). Our AI tailors model & training advice to your profile — so the platform recommends what actually fits you.</p>
+            <h3 id="tq-step0-title" data-i18n="steps.step0.title">Personalized onboarding</h3>
+            <p data-i18n="steps.step0.desc">Answer a few guided questions (goals, experience, risk). Our AI tailors model & training advice to your profile — so the platform recommends what actually fits you.</p>
             <img src="images/step_0.jpg" alt="Onboarding questions preview" class="tq-step-img" />
           </div>
         </article>
@@ -296,8 +340,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 1</div>
-            <h3 id="tq-step1-title">Choose an ML model</h3>
-            <p>Pick from curated models (XGBoost, LSTM, Transformer, ensemble). Each has recommended presets and a clear expectation of behavior and latency.</p>
+            <h3 id="tq-step1-title" data-i18n="steps.step1.title">Choose an ML model</h3>
+            <p data-i18n="steps.step1.desc">Pick from curated models (XGBoost, LSTM, Transformer, ensemble). Each has recommended presets and a clear expectation of behavior and latency.</p>
             <img src="images/step_1.jpg" alt="Model selection screen" class="tq-step-img" />
           </div>
         </article>
@@ -309,8 +353,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 2</div>
-            <h3 id="tq-step2-title">Select assets or a portfolio</h3>
-            <p>Choose assets (stocks/crypto) or select one of our prebuilt portfolios. Want custom? Build one — the platform will suggest diversification fixes automatically.</p>
+            <h3 id="tq-step2-title" data-i18n="steps.step2.title">Select assets or a portfolio</h3>
+            <p data-i18n="steps.step2.desc">Choose assets (stocks/crypto) or select one of our prebuilt portfolios. Want custom? Build one — the platform will suggest diversification fixes automatically.</p>
             <img src="images/step_2.jpg" alt="Portfolio selection" class="tq-step-img" />
           </div>
         </article>
@@ -322,8 +366,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 3</div>
-            <h3 id="tq-step3-title">Choose features (presets or custom)</h3>
-            <p>Use 50+ ready features (momentum, volume signals, macro bars) or define your own. Each feature includes a short explanation and recommended lags.</p>
+            <h3 id="tq-step3-title" data-i18n="steps.step3.title">Choose features (presets or custom)</h3>
+            <p data-i18n="steps.step3.desc">Use 50+ ready features (momentum, volume signals, macro bars) or define your own. Each feature includes a short explanation and recommended lags.</p>
             <img src="images/step_3.jpg" alt="Feature selection" class="tq-step-img" />
           </div>
         </article>
@@ -335,8 +379,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 4</div>
-            <h3 id="tq-step4-title">Hyperparameters — manual or AI-assisted</h3>
-            <p>Manually adjust or ask the AI Assistant to propose a hyperparameter set tuned to your assets and profile — saving you hours of trial-and-error.</p>
+            <h3 id="tq-step4-title" data-i18n="steps.step4.title">Hyperparameters — manual or AI-assisted</h3>
+            <p data-i18n="steps.step4.desc">Manually adjust or ask the AI Assistant to propose a hyperparameter set tuned to your assets and profile — saving you hours of trial-and-error.</p>
             <img src="images/step_4.jpg" alt="Hyperparameters UI" class="tq-step-img" />
           </div>
         </article>
@@ -348,8 +392,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 5</div>
-            <h3 id="tq-step5-title">Strategy & backtest settings</h3>
-            <p>Configure position sizing, number of concurrent trades, capital, slippage, and risk tolerance. Pick AI Agents to analyze backtests and suggest improvements.</p>
+            <h3 id="tq-step5-title" data-i18n="steps.step5.title">Strategy & backtest settings</h3>
+            <p data-i18n="steps.step5.desc">Configure position sizing, number of concurrent trades, capital, slippage, and risk tolerance. Pick AI Agents to analyze backtests and suggest improvements.</p>
             <img src="images/step_5.jpg" alt="Strategy and backtest settings" class="tq-step-img" />
           </div>
         </article>
@@ -361,8 +405,8 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 6</div>
-            <h3 id="tq-step6-title">Backtest analysis & PDF report</h3>
-            <p>Interactive dashboards + an AI-written executive summary. Export a professional PDF report with full metrics and trade logs for due-diligence or compliance.</p>
+            <h3 id="tq-step6-title" data-i18n="steps.step6.title">Backtest analysis & PDF report</h3>
+            <p data-i18n="steps.step6.desc">Interactive dashboards + an AI-written executive summary. Export a professional PDF report with full metrics and trade logs for due-diligence or compliance.</p>
             <img src="images/step_6.jpg" alt="Backtest report example" class="tq-step-img" />
           </div>
         </article>
@@ -374,15 +418,15 @@
           </div>
           <div class="tq-step-body">
             <div class="tq-step-meta">Step 7</div>
-            <h3 id="tq-step7-title">Deploy to live trading (Alpaca)</h3>
-            <p>Pick the trained model, enter your Alpaca API key & secret, choose paper or live, and Deploy. The platform handles execution, limits, and monitoring.</p>
+            <h3 id="tq-step7-title" data-i18n="steps.step7.title">Deploy to live trading (Alpaca)</h3>
+            <p data-i18n="steps.step7.desc">Pick the trained model, enter your Alpaca API key & secret, choose paper or live, and Deploy. The platform handles execution, limits, and monitoring.</p>
             <img src="images/step_7.jpg" alt="Deploy modal with Alpaca keys" class="tq-step-img" />
           </div>
         </article>
       </div>
 
       <div class="tq-cta">
-        <a class="tq-cta-btn" href="#tq-howitworks">Get started — try a demo</a>
+        <a class="tq-cta-btn" href="#tq-howitworks" data-i18n="howitworks.cta">Get started — try a demo</a>
       </div>
     </div>
   </section>
@@ -404,19 +448,19 @@
 
   <section class="tq-report-images" aria-labelledby="tq-report-images-title" style="padding:32px 18px;">
     <div style="max-width:1100px;margin:0 auto;">
-      <h3 id="tq-report-images-title" style="margin:0 0 12px 0;color:#0f1724;font-family:Montserrat,system-ui,Arial,sans-serif;">Report excerpt & Alpaca PnL</h3>
-      <p style="margin:0 0 18px 0;color:#6b7280;">Scroll down to explore a preview from the full report generated by the platform. Click any image to view it in detail.</p>
+      <h3 id="tq-report-images-title" style="margin:0 0 12px 0;color:#0f1724;font-family:Montserrat,system-ui,Arial,sans-serif;" data-i18n="reports.title">Report excerpt & Alpaca PnL</h3>
+      <p style="margin:0 0 18px 0;color:#6b7280;" data-i18n="reports.description">Scroll down to explore a preview from the full report generated by the platform. Click any image to view it in detail.</p>
 
       <div style="display:flex;flex-direction:column;gap:22px;align-items:center;">
 
         <figure class="tq-report-figure" style="width:100%;margin:0;display:flex;flex-direction:column;align-items:center;">
           <img class="tq-report-img" src="report_page_preview.png" alt="Report excerpt — summary and charts" style="width:100%;max-width:1100px;height:auto;border-radius:10px;object-fit:contain;box-shadow:0 10px 30px rgba(15,23,36,0.06);cursor:pointer;">
-          <figcaption style="margin-top:8px;color:#6b7280;font-size:13px;">Report excerpt — summary & charts</figcaption>
+          <figcaption style="margin-top:8px;color:#6b7280;font-size:13px;" data-i18n="reports.caption1">Report excerpt — summary & charts</figcaption>
         </figure>
 
         <figure class="tq-report-figure" style="width:100%;margin:0;display:flex;flex-direction:column;align-items:center;">
           <img class="tq-report-img" src="alpaca_pnl.jpg" alt="Alpaca PnL screenshot" style="width:100%;max-width:1100px;height:auto;border-radius:10px;object-fit:contain;box-shadow:0 10px 30px rgba(15,23,36,0.06);cursor:pointer;">
-          <figcaption style="margin-top:8px;color:#6b7280;font-size:13px;">Alpaca PnL — concluding results</figcaption>
+          <figcaption style="margin-top:8px;color:#6b7280;font-size:13px;" data-i18n="reports.caption2">Alpaca PnL — concluding results</figcaption>
         </figure>
       </div>
     </div>
@@ -669,9 +713,9 @@
   <div id="telegram-modal" class="telegram-modal">
     <div class="telegram-modal-content">
       <span class="telegram-modal-close" id="telegram-modal-close">&times;</span>
-      <h3>Contact me on Telegram</h3>
+      <h3 data-i18n="telegram.title">Contact me on Telegram</h3>
       <p>@dan_surnin</p>
-      <a href="https://t.me/dan_surnin" target="_blank" class="telegram-link-btn">Link to Telegram</a>
+      <a href="https://t.me/dan_surnin" target="_blank" class="telegram-link-btn" data-i18n="telegram.button">Link to Telegram</a>
     </div>
   </div>
 
@@ -743,6 +787,271 @@
   </script>
 
   <script>
+    // Translation system
+    const translations = {
+      en: {
+        contact: 'Contact me',
+        'hero.line1': 'AI Trading Platform',
+        'hero.line2': 'Train AI models',
+        'hero.line3': 'Run backtests',
+        'hero.line4': 'Deploy for live trading',
+        'hero.sub': 'AND ALL WITHOUT WRITING A SINGLE LINE OF CODE',
+        'video.badge': 'Prototype Demo',
+        'video.demo': 'Demo',
+        'info.label': 'ABOUT THE PLATFORM',
+        'info.title': 'All-in-one AI Trading Platform',
+        'info.description': 'Train, backtest, and deploy AI trading strategies with ease. This application empowers you to build, analyze, and optimize your trading ideas—no coding required.',
+        'stats.assets': 'supported stocks, crypto and currency pairs',
+        'stats.features': 'to train your models',
+        'stats.models': 'and each highly customizable',
+        'stats.agents': 'to help you analyze and improve your AI models and backtests',
+        'different.label': 'WHY THIS PLATFORM IS UNIQUE',
+        'different.title': 'Every deployment is unique.<br>Every model is yours.',
+        'different.description': 'This platform ensures that every AI model you train is one-of-a-kind, thanks to a very low level of models\' customization and a vast feature set. Deploy seamlessly to brokers like Alpaca, and enjoy fully automated, reproducible pipelines. Your strategies are never generic—they\'re as unique as your ideas.',
+        'different.stat1.label': 'Customizable pipelines',
+        'different.stat1.desc': 'from data to deployment',
+        'different.stat2.label': 'Unique model/strategy combos',
+        'different.stat2.desc': 'no two runs are the same',
+        'different.stat3.label': 'Broker integration',
+        'different.stat3.desc': 'deploy live in seconds',
+        'howitworks.kicker': 'How it works',
+        'howitworks.title': 'Train. Backtest. Deploy — in 8 simple steps.',
+        'howitworks.lead': 'From personalized onboarding to live deployment — a fully managed pipeline that removes engineering friction so you can focus on ideas and risk management. Click on a step to view more details.',
+        'howitworks.cta': 'Get started — try a demo',
+        'steps.step0.title': 'Personalized onboarding',
+        'steps.step0.desc': 'Answer a few guided questions (goals, experience, risk). Our AI tailors model & training advice to your profile — so the platform recommends what actually fits you.',
+        'steps.step1.title': 'Choose an ML model',
+        'steps.step1.desc': 'Pick from curated models (XGBoost, LSTM, Transformer, ensemble). Each has recommended presets and a clear expectation of behavior and latency.',
+        'steps.step2.title': 'Select assets or a portfolio',
+        'steps.step2.desc': 'Choose assets (stocks/crypto) or select one of our prebuilt portfolios. Want custom? Build one — the platform will suggest diversification fixes automatically.',
+        'steps.step3.title': 'Choose features (presets or custom)',
+        'steps.step3.desc': 'Use 50+ ready features (momentum, volume signals, macro bars) or define your own. Each feature includes a short explanation and recommended lags.',
+        'steps.step4.title': 'Hyperparameters — manual or AI-assisted',
+        'steps.step4.desc': 'Manually adjust or ask the AI Assistant to propose a hyperparameter set tuned to your assets and profile — saving you hours of trial-and-error.',
+        'steps.step5.title': 'Strategy & backtest settings',
+        'steps.step5.desc': 'Configure position sizing, number of concurrent trades, capital, slippage, and risk tolerance. Pick AI Agents to analyze backtests and suggest improvements.',
+        'steps.step6.title': 'Backtest analysis & PDF report',
+        'steps.step6.desc': 'Interactive dashboards + an AI-written executive summary. Export a professional PDF report with full metrics and trade logs for due-diligence or compliance.',
+        'steps.step7.title': 'Deploy to live trading (Alpaca)',
+        'steps.step7.desc': 'Pick the trained model, enter your Alpaca API key & secret, choose paper or live, and Deploy. The platform handles execution, limits, and monitoring.',
+        'reports.title': 'Report excerpt & Alpaca PnL',
+        'reports.description': 'Scroll down to explore a preview from the full report generated by the platform. Click any image to view it in detail.',
+        'reports.caption1': 'Report excerpt — summary & charts',
+        'reports.caption2': 'Alpaca PnL — concluding results',
+        'telegram.title': 'Contact me on Telegram',
+        'telegram.button': 'Link to Telegram'
+      },
+      ru: {
+        contact: 'Связаться со мной',
+        'hero.line1': 'Трейдинговая ИИ платформа',
+        'hero.line2': 'Обучайте ИИ модели',
+        'hero.line3': 'Проводите бэктесты',
+        'hero.line4': 'Запускайте ИИ торговлю',
+        'hero.sub': 'И ВСЁ БЕЗ НАПИСАНИЯ НИ ОДНОЙ СТРОКИ КОДА',
+        'video.badge': 'Демо прототипа',
+        'video.demo': 'Демо',
+        'info.label': 'О ПЛАТФОРМЕ',
+        'info.title': 'Всё-в-одном: Торговая ИИ платформа',
+        'info.description': 'Трейдинг акциями и криптовалютой всегда считался сложным. А автоматизация трейдинга алгоритмами машинного обучения (ИИ) была привилегией ML инженеров, знающих математическую составляющую всех ML алгоритмов и умеющих программировать. Теперь это стало доступно для всех! Обучайте, тестируйте и развертывайте торговые стратегии на основе ИИ с легкостью. Это приложение дает вам возможность создавать, анализировать и оптимизировать ваши торговые идеи — без необходимости программирования.',
+        'stats.assets': 'поддерживаемые акции, криптовалюты и валютные пары',
+        'stats.features': 'для обучения ваших моделей',
+        'stats.models': 'каждая из которых высоко настраиваемая',
+        'stats.agents': 'помогают анализировать и улучшать ваши модели ИИ и бэктесты',
+        'different.label': 'ПОЧЕМУ ЭТА ПЛАТФОРМА УНИКАЛЬНА',
+        'different.title': 'Каждое развертывание уникально.<br>Каждая модель ваша.',
+        'different.description': 'Эта платформа гарантирует, что каждая модель ИИ, которую вы обучаете, уникальна благодаря очень высокому уровню настройки моделей и обширному набору функций. Бесшовно развертывайте на брокерских платформах типа Alpaca и наслаждайтесь полностью автоматизированными, воспроизводимыми пайплайнами. Ваши стратегии так же уникальны, как и ваши идеи.',
+        'different.stat1.label': 'Настраиваемые пайплайны',
+        'different.stat1.desc': 'от данных до развертывания',
+        'different.stat2.label': 'Уникальные комбинации моделей/стратегий',
+        'different.stat2.desc': 'не бывает двух одинаковых запусков',
+        'different.stat3.label': 'Интеграция с брокером',
+        'different.stat3.desc': 'развертывание в реальном времени за секунды',
+        'howitworks.kicker': 'Как это работает',
+        'howitworks.title': 'Обучите. Протестируйте. Разверните — за 8 простых шагов.',
+        'howitworks.lead': 'От персонального онбординга до живого развертывания — полноценно управляемый пайплайн, который убирает технические сложности, чтобы вы могли сосредоточиться на идеях и управлении рисками. Нажмите на шаг, чтобы увидеть больше деталей.',
+        'howitworks.cta': 'Начните — попробуйте демо',
+        'steps.step0.title': 'Персонализированный онбординг',
+        'steps.step0.desc': 'Ответьте на несколько направляющих вопросов (цели, опыт, риск). Наш ИИ подстраивает советы по моделям и обучению под ваш профиль — так платформа рекомендует то, что вам действительно подходит.',
+        'steps.step1.title': 'Выберите модель ML',
+        'steps.step1.desc': 'Выбирайте из реализованных моделей (XGBoost, LSTM, Transformer, ансамбли и т.д.). У каждой есть рекомендуемые предустановки и четкое понимание поведения и задержки.',
+        'steps.step2.title': 'Выберите активы или портфель',
+        'steps.step2.desc': 'Выбирайте активы (акции/криптовалюты) или используйте один из наших готовых портфелей. Нужен кастомный? Создайте — платформа автоматически предложит исправления для диверсификации.',
+        'steps.step3.title': 'Выберите признаки (заранее определенные или кастомные)',
+        'steps.step3.desc': 'Используйте более 50 готовых фич (скользящие средние, сигналы объема, макрополосы) или определите свои. Каждая фича включает краткое объяснение.',
+        'steps.step4.title': 'Гиперпараметры — вручную или с помощью ИИ',
+        'steps.step4.desc': 'Настраивайте параметры вручную или попросите AI-помощника предложить набор гиперпараметров, настроенный под ваши активы и профиль — это сэкономит часы проб и ошибок.',
+        'steps.step5.title': 'Настройки стратегии и бэктеста',
+        'steps.step5.desc': 'Настройте правила исполнения: количество одновременных длинных/коротких позиций, правила размеров позиций (фиксированные, дробные, Kelly), капитал для бэктеста, предположения о комиссиях/проскальзывании и максимальные пределы просадки. Выберите AI-агентов для анализа результатов бэктеста — они укажут на структурные проблемы, такие как чрезмерная концентрация, утечка данных или data-snooping.',
+        'steps.step6.title': 'Анализ бэктеста и PDF-отчет',
+        'steps.step6.desc': 'Интерактивные дашборды + краткое резюме, написанное ИИ. Экспортируйте PDF-отчет с полными метриками и логами сделок для прозрачности.',
+        'steps.step7.title': 'Развертывание для живой торговли (Alpaca)',
+        'steps.step7.desc': 'Выберите обученную модель, введите ваш API-key и Secret-key Alpaca, выберите демо (paper) или живой режим торговли и нажмите Развернуть. Платформа управляет исполнением, лимитами и занимаетя мониторингом.',
+        'reports.title': 'Выдержка из отчета и PnL Alpaca',
+        'reports.description': 'Прокрутите вниз, чтобы изучить превью полного отчета, созданного платформой. Нажмите на любое изображение, чтобы увидеть его в деталях.',
+        'reports.caption1': 'Выдержка из отчета — резюме и графики',
+        'reports.caption2': 'PnL Alpaca — итоговые результаты',
+        'telegram.title': 'Связаться со мной в Telegram',
+        'telegram.button': 'Ссылка на Telegram'
+      }
+    };
+
+    let currentLang = 'en';
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const translation = translations[lang][key];
+        if (translation) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.value = translation;
+          } else {
+            el.innerHTML = translation;
+          }
+        }
+      });
+
+      // Update lang switcher buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+
+      // Update TQ_STEP_CONTENT if it exists
+      updateTQStepContent(lang);
+
+      // Save preference
+      localStorage.setItem('preferred-language', lang);
+    }
+
+    function updateTQStepContent(lang) {
+      if (typeof TQ_STEP_CONTENT !== 'undefined') {
+        TQ_STEP_CONTENT = getStepContent(lang);
+      }
+    }
+
+    function getStepContent(lang) {
+      if (lang === 'ru') {
+        return {
+          0: {
+            title: 'Персонализированный онбординг',
+            img: 'images/step_0.gif',
+            alt: 'Превью вопросов онбординга',
+            desc: 'При регистрации пользователи отвечают на короткий набор особых вопросов: торговые цели (рост, доход, сохранение), предпочитаемые рынки, уровень опыта, толерантность к риску и временной горизонт. TradiQuant использует эти ответы для создания персонализированного профиля рекомендаций, который влияет на предложения выбора моделей ИИ, активов, признаков, пространства поиска гиперпараметров и тоговых стратегий. Это гарантирует, что первая модель, которую вы обучите, будет соответствовать вашим целям — экономит время и снижает входной барьер для значимых экспериментов.',
+            meta: 'Почему это важно: Начинает с моделей и настроек, соответствующих вашим целям.'
+          },
+          1: {
+            title: 'Выберите модель ML',
+            img: 'images/step_1.gif',
+            alt: 'Экран выбора модели',
+            desc: 'Выбирайте из реализованных моделей: классическое ML (XGBoost/LightGBM), последовательные модели (LSTM), архитектуры на основе трансформеров для временных рядов и ансамблевые комбинации (и т.д.). Каждая карточка модели содержит ожидаемую задержку, примеры использования и рекомендуемые предустановки. На основе вашего профиля онбординга мы выделяем модели, наиболее подходящие вашей стратегии и профилю риска.',
+            meta: 'Совет: Начните с рекомендуемых предустановок, если не уверены.'
+          },
+          2: {
+            title: 'Выберите активы или портфель',
+            img: 'images/step_2.gif',
+            alt: 'Выбор портфеля',
+            desc: 'Выбирайте отдельные акции или криптовалюты, импортируйте свой список или мгновенно начинайте с одного из наших отобранных портфелей (Momentum, Balanced, Crypto Basket, Value). Платформа проверяет тикеры и доступность данных, выделяет проблемы диверсификации и предлагает интервалы ребаланса. Наш персонализированный AI-помощник рекомендует активы, соответствующие вашим целям и профилю риска.',
+            meta: 'Про-функция: Проверка портфеля и предложения по диверсификации.'
+          },
+          3: {
+            title: 'Выберите признаки (заранее определенные или кастомные)',
+            img: 'images/step_3.gif',
+            alt: 'Выбор фич',
+            desc: 'Выбирайте из более чем 50 разработанных фич: скользящие средние с разными окнами, RSI, всплески объема, полосы волатильности, макроиндикаторы и кастомные агрегированные сигналы. Каждая фича включает краткое объяснение и рекомендуемый лаг/агрегацию, чтобы избежать смещения lookahead.',
+            meta: 'Напоминание: Выбор фич сильно влияет на поведение модели и интерпретируемость.'
+          },
+          4: {
+            title: 'Гиперпараметры — вручную или с помощью ИИ',
+            img: 'images/step_4.gif',
+            alt: 'Интерфейс гиперпараметров',
+            desc: 'Каждая модель имеет уникальные гиперпараметры. Используйте дефолтные значения, настраивайте параметры вручную или попросите AI-помощника предложить набор гиперпараметров, настроенный под профиль вашего аккаунта и выбранные активы. Предложение ИИ учитывает исторические паттерны производительности и вашу толерантность к риску для рекомендации практической отправной точки.',
+            meta: 'AI-помощник: Экономит часы ручной настройки и предотвращает снижает вероятность переобучения.'
+          },
+          5: {
+            title: 'Настройки стратегии и бэктеста',
+            img: 'images/step_5.gif',
+            alt: 'Настройки стратегии и бэктеста',
+            desc: 'Установите правила исполнения: количество одновременных длинных/коротких позиций, правила размеров позиций (фиксированные, дробные, Kelly), капитал для бэктеста, предположения о комиссиях/проскальзывании и максимальные пределы просадки. Выберите AI-агентов для диагностики результатов бэктеста — они укажут на структурные проблемы, такие как чрезмерная концентрация, утечка данных или data-snooping.',
+            meta: 'Настройте торговые правила, соответствующие ограничениям реального исполнения.'
+          },
+          6: {
+            title: 'Анализ бэктеста и PDF-отчет',
+            img: 'images/step_6.gif',
+            alt: 'Пример отчета по бэктесту',
+            desc: 'После обучения просмотрите комплексный отчет: кривую эквити, просадки, P&L по активам, логи сделок, тепловые карты экспозиции, важность фич и матрицы ошибок. Отчет, написанный ИИ агентами, выделяет сильные стороны, слабости и предлагаемые следующие шаги. Скачивайте PDF отчет, содержащий профессиональную конфигурацию, PnL, alpha, beta и т.д. для комплексного анализа трейдинговой стратегии.',
+            meta: 'На этом этапе принимается решение о развертывании обученной модели для живой торговли или продолжении экспериментов.'
+          },
+          7: {
+            title: 'Развертывание для живой торговли (Alpaca)',
+            img: 'images/step_7.gif',
+            alt: 'Модальное окно развертывания с ключами Alpaca',
+            desc: 'Развертывайте обученные модели на Alpaca за секунды. Выберите демо (paper) или живой режим торговли, вставьте ваш API-key и secret-key Alpaca (хранится безопасно) и нажмите Развернуть. Платформа начнет торговлю на основе обученной модели за вас, так что вы можете мониторить производительность вместо постоянного контроля ордеров.',
+            meta: 'Безопасность: API-ключи зашифрованы; демо (paper) режим торговли включен по умолчанию.'
+          }
+        };
+      }
+      return {
+        0: {
+          title: 'Personalized onboarding',
+          img: 'images/step_0.gif',
+          alt: 'Onboarding questions preview',
+          desc: `At registration users answer a short set of thoughtfully designed questions: trading goals (growth, income, preservation), preferred markets, experience level, risk tolerance, and time horizon. TradiQuant uses these answers to build a personalized recommendation profile that influences model suggestions, feature presets, and hyperparameter search spaces. This ensures the first model you train is aligned with your objectives—saving time and lowering the barrier to meaningful experiments.`,
+          meta: 'Why it matters: Gets you started with models & settings that match your goals.'
+        },
+        1: {
+          title: 'Choose an ML model',
+          img: 'images/step_1.gif',
+          alt: 'Model selection screen',
+          desc: `Select from a curated library: classical ML (XGBoost/LightGBM), sequence models (LSTM), transformer-based architectures for time series, and ensemble combinations. Each model card contains expected latency, sample use-cases, and recommended presets. Based on your onboarding profile we highlight the models most likely to match your strategy and risk profile.`,
+          meta: 'Tip: Start with recommended presets if you are unsure.'
+        },
+        2: {
+          title: 'Select assets or a portfolio',
+          img: 'images/step_2.gif',
+          alt: 'Portfolio selection',
+          desc: `Select individual stocks or cryptocurrencies, import a custom list, or start instantly with one of our curated portfolios (Momentum, Balanced, Crypto Basket, Value). The platform validates tickers and data availability, highlights diversification issues, and suggests rebalance intervals. Our personalized AI assistant recommends assets tailored to your objectives and risk profile.`,
+          meta: 'Pro feature: Portfolio validation & diversification suggestions.'
+        },
+        3: {
+          title: 'Choose features (presets or custom)',
+          img: 'images/step_3.gif',
+          alt: 'Feature selection',
+          desc: `Choose from 50+ engineered features: moving averages at different windows, RSI, volume spikes, volatility bands, macro indicators, and custom aggregated signals. Each feature includes a short explanation and recommended lag/aggregation to avoid lookahead bias.`,
+          meta: 'Reminder: Feature choice strongly impacts model behavior and interpretability.'
+        },
+        4: {
+          title: 'Hyperparameters — manual or AI-assisted',
+          img: 'images/step_4.gif',
+          alt: 'Hyperparameters UI',
+          desc: `Every model exposes relevant hyperparameters. Use quick presets (fast/robust/exploratory), tune parameters manually, or ask the AI Assistant to propose a hyperparameter set tuned to your account profile and selected assets. The AI suggestion considers historical performance patterns and your risk tolerance to recommend a practical starting point.`,
+          meta: 'AI Assist: Saves hours of manual tuning and prevents obvious overfitting.'
+        },
+        5: {
+          title: 'Strategy & backtest settings',
+          img: 'images/step_5.gif',
+          alt: 'Strategy and backtest settings',
+          desc: `Set execution rules: number of concurrent long/short positions, position-sizing rules (fixed, fractional, Kelly), capital for backtest, commission/slippage assumptions, and max drawdown limits. Choose AI Agents to run diagnostics over backtest outputs — they will point out structural issues like over-concentration, lookahead leakage, or data-snooping.`,
+          meta: 'Configure trading rules that match real-world execution constraints.'
+        },
+        6: {
+          title: 'Backtest analysis & PDF report',
+          img: 'images/step_6.gif',
+          alt: 'Backtest report example',
+          desc: `After training, review a comprehensive report: equity curve, drawdowns, per-asset P&L, trade-level logs, exposure heatmaps, feature importance, and confusion matrices. An AI-written executive summary highlights strengths, weaknesses, and suggested next steps. Export a professional PDF containing the config, model hash, seed, and full logs for compliance or investor review.`,
+          meta: 'Includes reproducibility info: data snapshot, seed, model checkpoint.'
+        },
+        7: {
+          title: 'Deploy to live trading (Alpaca)',
+          img: 'images/step_7.gif',
+          alt: 'Deploy modal with Alpaca keys',
+          desc: `Deploy trained models to Alpaca in seconds. Choose paper or live mode, paste your Alpaca API key & secret (stored securely), set runtime risk limits, and press Deploy. The platform manages order execution, monitoring, logging, and a safety circuit breaker (max intraday loss), so you can monitor performance instead of babysitting orders.`,
+          meta: 'Security: API keys are encrypted; paper mode enabled by default.'
+        }
+      };
+    }
+
     const tq = (sel, ctx=document) => ctx.querySelector(sel);
     const tqAll = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
@@ -755,64 +1064,20 @@
       });
     });
 
-    const TQ_STEP_CONTENT = {
-      0: {
-        title: 'Personalized onboarding',
-        img: 'images/step_0.gif',
-        alt: 'Onboarding questions preview',
-        desc: `At registration users answer a short set of thoughtfully designed questions: trading goals (growth, income, preservation), preferred markets, experience level, risk tolerance, and time horizon. TradiQuant uses these answers to build a personalized recommendation profile that influences model suggestions, feature presets, and hyperparameter search spaces. This ensures the first model you train is aligned with your objectives—saving time and lowering the barrier to meaningful experiments.`,
-        meta: 'Why it matters: Gets you started with models & settings that match your goals.'
-      },
-      1: {
-        title: 'Choose an ML model',
-        img: 'images/step_1.gif',
-        alt: 'Model selection screen',
-        desc: `Select from a curated library: classical ML (XGBoost/LightGBM), sequence models (LSTM), transformer-based architectures for time series, and ensemble combinations. Each model card contains expected latency, sample use-cases, and recommended presets. Based on your onboarding profile we highlight the models most likely to match your strategy and risk profile.`,
-        meta: 'Tip: Start with recommended presets if you are unsure.'
-      },
-      2: {
-        title: 'Select assets or a portfolio',
-        img: 'images/step_2.gif',
-        alt: 'Portfolio selection',
-        desc: `Select individual stocks or cryptocurrencies, import a custom list, or start instantly with one of our curated portfolios (Momentum, Balanced, Crypto Basket, Value). The platform validates tickers and data availability, highlights diversification issues, and suggests rebalance intervals. Our personalized AI assistant recommends assets tailored to your objectives and risk profile.`,
-        meta: 'Pro feature: Portfolio validation & diversification suggestions.'
-      },
-      3: {
-        title: 'Choose features (presets or custom)',
-        img: 'images/step_3.gif',
-        alt: 'Feature selection',
-        desc: `Choose from 50+ engineered features: moving averages at different windows, RSI, volume spikes, volatility bands, macro indicators, and custom aggregated signals. Each feature includes a short explanation and recommended lag/aggregation to avoid lookahead bias.`,
-        meta: 'Reminder: Feature choice strongly impacts model behavior and interpretability.'
-      },
-      4: {
-        title: 'Hyperparameters — manual or AI-assisted',
-        img: 'images/step_4.gif',
-        alt: 'Hyperparameters UI',
-        desc: `Every model exposes relevant hyperparameters. Use quick presets (fast/robust/exploratory), tune parameters manually, or ask the AI Assistant to propose a hyperparameter set tuned to your account profile and selected assets. The AI suggestion considers historical performance patterns and your risk tolerance to recommend a practical starting point.`,
-        meta: 'AI Assist: Saves hours of manual tuning and prevents obvious overfitting.'
-      },
-      5: {
-        title: 'Strategy & backtest settings',
-        img: 'images/step_5.gif',
-        alt: 'Strategy and backtest settings',
-        desc: `Set execution rules: number of concurrent long/short positions, position-sizing rules (fixed, fractional, Kelly), capital for backtest, commission/slippage assumptions, and max drawdown limits. Choose AI Agents to run diagnostics over backtest outputs — they will point out structural issues like over-concentration, lookahead leakage, or data-snooping.`,
-        meta: 'Configure trading rules that match real-world execution constraints.'
-      },
-      6: {
-        title: 'Backtest analysis & PDF report',
-        img: 'images/step_6.gif',
-        alt: 'Backtest report example',
-        desc: `After training, review a comprehensive report: equity curve, drawdowns, per-asset P&L, trade-level logs, exposure heatmaps, feature importance, and confusion matrices. An AI-written executive summary highlights strengths, weaknesses, and suggested next steps. Export a professional PDF containing the config, model hash, seed, and full logs for compliance or investor review.`,
-        meta: 'Includes reproducibility info: data snapshot, seed, model checkpoint.'
-      },
-      7: {
-        title: 'Deploy to live trading (Alpaca)',
-        img: 'images/step_7.gif',
-        alt: 'Deploy modal with Alpaca keys',
-        desc: `Deploy trained models to Alpaca in seconds. Choose paper or live mode, paste your Alpaca API key & secret (stored securely), set runtime risk limits, and press Deploy. The platform manages order execution, monitoring, logging, and a safety circuit breaker (max intraday loss), so you can monitor performance instead of babysitting orders.`,
-        meta: 'Security: API keys are encrypted; paper mode enabled by default.'
-      }
-    };
+    let TQ_STEP_CONTENT = getStepContent('en');
+
+    // Initialize language switcher
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedLang = localStorage.getItem('preferred-language') || 'en';
+      switchLanguage(savedLang);
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const lang = this.getAttribute('data-lang');
+          switchLanguage(lang);
+        });
+      });
+    });
 
     const modal = tq('#tq-modal');
     const modalTitle = tq('#tq-modal-title');

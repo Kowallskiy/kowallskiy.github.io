@@ -56,6 +56,36 @@ body {
   user-select: none;
   line-height: 1;
 }
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.lang-switcher {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.lang-btn {
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+.lang-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+}
+.lang-btn.active {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
+}
 .logo { display: none; }
 .contact-btn {
   background: linear-gradient(90deg, #3a5eff 0%, #6a7cff 100%);
@@ -478,6 +508,13 @@ body {
     font-size: 0.9rem;
     padding: 7px 12px;
     min-width: unset;
+  }
+  .lang-btn {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+  }
+  .header-controls {
+    gap: 8px;
   }
   .hero {
     padding-top: 32vw;
