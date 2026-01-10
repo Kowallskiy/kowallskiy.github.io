@@ -234,7 +234,13 @@
         </svg>
       </div>
       <img class="demo-gif-preview" id="demo-gif-preview" src="images/demo.jpg" alt="Demo preview gif" />
-      <video class="demo-video" id="demo-video" src="demo.mp4" controls></video>
+      
+      <video id="demo-video" class="demo-video" width="960" preload="metadata" controls playsinline poster="images/demo-poster.jpg">
+        <source src="demo.mp4" type="video/mp4">
+        <track kind="subtitles" label="Русский" srclang="ru" src="subs_ru.vtt" default>
+        Ваш браузер не поддерживает видео.
+      </video>
+
       <div class="video-predemo-overlay" id="video-predemo">
         <button class="video-play-btn" id="video-play-btn" aria-label="Play demo video" tabindex="0">
           <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -556,131 +562,7 @@
       }
     </script>
 
-    <div class="container" style="max-width:760px;margin:0 auto;font-family:Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
-      <h2 id="tq-article-title" style="color: #ffffff; margin:0 0 8px 0; font-size:28px;">What I implemented: BNNs for trading — ELBO, SBC, and Marginals</h2>
-      <p style="margin:0 0 18px 0; color: #cbd5e1; font-size:15px;">
-        This section describes decisions I made while building TradiQuant’s probabilistic modeling pipeline for trading: how I train Bayesian Neural Networks with Pyro + SVI, how I validate them with Simulation-Based Calibration (SBC), and why I inspect marginal posteriors before live deployment.
-      </p>
-
-      <!-- 1. ELBO -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">1. ELBO — what I optimize and why</h3>
-        <p style="color:#cbd5e1; margin-bottom:10px;">
-          I train Bayesian models with Pyro SVI. Concretely, I maximize the ELBO — this is the objective used by SVI and is central to how I trade uncertainty-aware signals.
-        </p>
-
-        <div class="formula-card" style="padding:14px;border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.03);">
-          <div style="color:#bfe0ff;font-weight:600;font-size:13px;margin-bottom:8px;">ELBO (definition)</div>
-          <div class="math display" style="font-size:18px;color:#ffffff;line-height:1.4;">
-            $$\mathrm{ELBO}(q)=\mathbb{E}_{q(\mathbf z)}\big[\log p(\mathbf x,\mathbf z)-\log q(\mathbf z)\big]$$
-          </div>
-        </div>
-
-        <div class="formula-card" style="padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);">
-          <div style="color:#bfe0ff;font-weight:600;font-size:13px;margin-bottom:8px;">Equivalent, optimization view</div>
-          <div class="math display" style="font-size:18px;color:#ffffff;">
-            $$\mathrm{ELBO}(q)=\mathbb{E}_{q(\mathbf z)}[\log p(\mathbf x\mid\mathbf z)]-\mathrm{KL}\big(q(\mathbf z)\,\|\,p(\mathbf z)\big).$$
-          </div>
-        </div>
-
-        <p class="note" style="margin-top:12px;color:#a8b3c7;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;">
-          Practically: I use Adam + learning-rate schedule, monitor ELBO and held-out predictive metrics (sharpe/IC for trading signals) during training. ELBO alone doesn't guarantee good trading performance, so I always pair it with downstream backtest evaluations.
-        </p>
-      </div>
-
-      <!-- 2. SBC -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">2. How I use SBC to catch systematic bias</h3>
-        <p style="color:#cbd5e1;">
-          Variational approximations can be biased (often underdispersed). I apply Simulation-Based Calibration (SBC) as a diagnostic before trusting a model for live trading.
-        </p>
-        <ol style="color:#cbd5e1; margin-left:16px;">
-          <li>Draw a true parameter $\theta^\ast \sim p(\theta)$ from the prior I used for trading experiments.</li>
-          <li>Simulate synthetic returns $y \sim p(y\mid\theta^\ast)$ using the same data pipeline and feature preprocessing as production.</li>
-          <li>Fit SVI on $y$, sample $M$ draws $\{\theta^{(m)}\}_{m=1}^M$ from the guide and compute the rank:</li>
-        </ol>
-
-        <div class="formula-card" style="margin-top:10px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
-          <div class="math display" style="font-size:18px;color:#ffffff;">$$\mathrm{rank}_s=\#\{\,m:\ \theta^{(m)}<\theta^\ast\,\}.$$</div>
-        </div>
-
-        <p style="color:#cbd5e1;margin-top:12px;">I repeat this for S simulated datasets. For models I ship to backtests, the SBC histogram must be approximately uniform — otherwise I rework the guide (richer family or flows) or move to MCMC for verification.</p>
-
-        <figure style="margin-top:14px;">
-          <img src="images/sbc.png" alt="SBC histogram" style="width:100%;border-radius:8px;box-shadow:0 12px 40px rgba(3,6,23,0.6);" />
-          <figcaption style="color:#9fb4cc;font-size:13px;margin-top:8px;">SBC ranks histogram from one of my internal tests — target: uniform.</figcaption>
-        </figure>
-      </div>
-
-      <!-- 3. Analytic check -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">3. Analytic normal–normal check I use as a unit test</h3>
-        <p style="color:#cbd5e1;">Before running expensive experiments on time series, I validate the pipeline on conjugate models where the posterior is known.</p>
-
-        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
-          <div class="math display" style="font-size:18px;color:#ffffff;">
-  $$
-  \frac{1}{\sigma_{\mathrm{post}}^2}=\frac{1}{\sigma_0^2}+\frac{1}{\sigma^2},\qquad
-  m_{\mathrm{post}}=\sigma_{\mathrm{post}}^2\Big(\frac{\mu_0}{\sigma_0^2}+\frac{y}{\sigma^2}\Big).
-  $$
-          </div>
-        </div>
-
-        <p style="color:#cbd5e1;margin-top:12px;">I compare SVI's posterior mean/variance to these formulas as an automated test in CI — it quickly flags bugs in the model or guide implementation.</p>
-      </div>
-
-      <!-- 4. Marginals -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">4. Why I inspect marginal posteriors for trading parameters</h3>
-        <p style="color:#cbd5e1;">Trading models often have hierarchical and funnel structures. I look at marginals to understand scale and identify problematic geometry.</p>
-
-        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
-          <div class="math display" style="font-size:18px;color:#ffffff;">$$p(\theta_1\mid y)=\int p(\theta_1,\theta_2,\dots,\theta_D\mid y)\ d\theta_2\cdots d\theta_D.$$</div>
-        </div>
-
-        <figure style="margin-top:12px;">
-          <img src="images/margin.png" alt="Marginal posterior" style="width:100%;border-radius:8px;"/>
-          <figcaption style="color:#9fb4cc;font-size:13px;margin-top:8px;">Example marginal posterior I inspect before trusting weight priors or hierarchical scales.</figcaption>
-        </figure>
-
-        <p style="color:#cbd5e1;margin-top:12px;">If the marginal for a volatility scale is extremely skewed or multimodal, I prefer to revise priors or test heavier-tailed alternatives to avoid fragile live behavior.</p>
-      </div>
-
-      <!-- 5. Priors & weight scaling (trading-specific) -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">5. Priors & neural weight scaling — what I set for trading</h3>
-        <p style="color:#cbd5e1;">Key practical choices I use in TradiQuant to get stable predictive distributions for returns:</p>
-        <ul style="color:#cbd5e1;">
-          <li><strong>Target</strong>: standardized one-step return $y=\Delta p(t,t+1)$ (standardize per ticker). I use $\sigma\sim\mathrm{HalfNormal}(1)$ as a default observation noise prior.</li>
-          <li><strong>Hierarchical priors</strong>: group means $\mu_i$ per ticker with a hyperprior; I initialize scale using empirical std across tickers.</li>
-          <li><strong>Weight priors</strong>: with inputs standardized, I initialize dense layer weights as $w_i\sim\mathcal{N}(0,1/\sqrt{N_{\mathrm{in}}})$ so pre-activation variance is ≈1:</li>
-        </ul>
-
-        <div class="formula-card" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);">
-          <div class="math display" style="font-size:18px;color:#ffffff;">$$\mathrm{Var}\Big(\sum_{i=1}^N w_i x_i\Big)\approx\sum_i \mathrm{Var}(w_i x_i)=N\cdot\frac{1}{N}\cdot 1=1.$$</div>
-        </div>
-
-        <p style="color:#cbd5e1;margin-top:12px;">These choices keep predictive scales realistic and prevent extreme simulated returns that would break backtests.</p>
-      </div>
-
-      <!-- 6. Simulated vs real check -->
-      <div style="margin-top:26px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">6. I always compare simulated vs real returns</h3>
-        <p style="color:#cbd5e1;">After I define the generative model and priors I run forward simulations and compare distributional support with real standardized returns. This prevents models that produce unrealistic tail mass from reaching deployment.</p>
-
-        <p class="note" style="color:#cbd5e1;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:12px;">
-          If simulated returns have a larger spread than historical data (or the support is shifted), I adjust priors or feature preprocessing until the predictive simulations align with reality.
-        </p>
-      </div>
-
-      <!-- 8. Closing: deployment note -->
-      <div style="margin-top:26px;margin-bottom:8px;">
-        <h3 style="color:#e6eef8;margin-bottom:6px;">7. From validation to deployment</h3>
-        <p style="color:#cbd5e1;">
-          Models that pass these checks are further validated by backtests in TradiQuant; only then I allow deployment to Alpaca (paper mode first). This staged workflow — analytic checks, SBC, simulated vs real comparisons, and backtests — reduces the risk of shipping models that look good on ELBO alone but fail in execution.
-        </p>
-      </div>
-    </div>
+    
 
     <!-- MathJax typeset trigger -->
     <script>
@@ -707,7 +589,7 @@
 
 
   <footer class="site-footer">
-    © TradiQuant 2025 | Built by Denis Surnin | Telegram: @dan_surnin
+    © TradiQuant 2026 | Built by Denis Surnin | Telegram: @dan_surnin
   </footer>
 
   <div id="telegram-modal" class="telegram-modal">
@@ -936,56 +818,56 @@
         return {
           0: {
             title: 'Персонализированный онбординг',
-            img: 'images/step_0.gif',
+            img: 'images/step_0.jpg',
             alt: 'Превью вопросов онбординга',
             desc: 'При регистрации пользователи отвечают на короткий набор особых вопросов: торговые цели (рост, доход, сохранение), предпочитаемые рынки, уровень опыта, толерантность к риску и временной горизонт. TradiQuant использует эти ответы для создания персонализированного профиля рекомендаций, который влияет на предложения выбора моделей ИИ, активов, признаков, пространства поиска гиперпараметров и тоговых стратегий. Это гарантирует, что первая модель, которую вы обучите, будет соответствовать вашим целям — экономит время и снижает входной барьер для значимых экспериментов.',
             meta: 'Почему это важно: Начинает с моделей и настроек, соответствующих вашим целям.'
           },
           1: {
             title: 'Выберите модель ML',
-            img: 'images/step_1.gif',
+            img: 'images/step_1.jpg',
             alt: 'Экран выбора модели',
             desc: 'Выбирайте из реализованных моделей: классическое ML (XGBoost/LightGBM), последовательные модели (LSTM), архитектуры на основе трансформеров для временных рядов и ансамблевые комбинации (и т.д.). Каждая карточка модели содержит ожидаемую задержку, примеры использования и рекомендуемые предустановки. На основе вашего профиля онбординга мы выделяем модели, наиболее подходящие вашей стратегии и профилю риска.',
             meta: 'Совет: Начните с рекомендуемых предустановок, если не уверены.'
           },
           2: {
             title: 'Выберите активы или портфель',
-            img: 'images/step_2.gif',
+            img: 'images/step_2.jpg',
             alt: 'Выбор портфеля',
             desc: 'Выбирайте отдельные акции или криптовалюты, импортируйте свой список или мгновенно начинайте с одного из наших отобранных портфелей (Momentum, Balanced, Crypto Basket, Value). Платформа проверяет тикеры и доступность данных, выделяет проблемы диверсификации и предлагает интервалы ребаланса. Наш персонализированный AI-помощник рекомендует активы, соответствующие вашим целям и профилю риска.',
             meta: 'Про-функция: Проверка портфеля и предложения по диверсификации.'
           },
           3: {
             title: 'Выберите признаки (заранее определенные или кастомные)',
-            img: 'images/step_3.gif',
+            img: 'images/step_3.jpg',
             alt: 'Выбор фич',
             desc: 'Выбирайте из более чем 50 разработанных фич: скользящие средние с разными окнами, RSI, всплески объема, полосы волатильности, макроиндикаторы и кастомные агрегированные сигналы. Каждая фича включает краткое объяснение и рекомендуемый лаг/агрегацию, чтобы избежать смещения lookahead.',
             meta: 'Напоминание: Выбор фич сильно влияет на поведение модели и интерпретируемость.'
           },
           4: {
             title: 'Гиперпараметры — вручную или с помощью ИИ',
-            img: 'images/step_4.gif',
+            img: 'images/step_4.jpg',
             alt: 'Интерфейс гиперпараметров',
             desc: 'Каждая модель имеет уникальные гиперпараметры. Используйте дефолтные значения, настраивайте параметры вручную или попросите AI-помощника предложить набор гиперпараметров, настроенный под профиль вашего аккаунта и выбранные активы. Предложение ИИ учитывает исторические паттерны производительности и вашу толерантность к риску для рекомендации практической отправной точки.',
             meta: 'AI-помощник: Экономит часы ручной настройки и предотвращает снижает вероятность переобучения.'
           },
           5: {
             title: 'Настройки стратегии и бэктеста',
-            img: 'images/step_5.gif',
+            img: 'images/step_5.jpg',
             alt: 'Настройки стратегии и бэктеста',
             desc: 'Установите правила исполнения: количество одновременных длинных/коротких позиций, правила размеров позиций (фиксированные, дробные, Kelly), капитал для бэктеста, предположения о комиссиях/проскальзывании и максимальные пределы просадки. Выберите AI-агентов для диагностики результатов бэктеста — они укажут на структурные проблемы, такие как чрезмерная концентрация, утечка данных или data-snooping.',
             meta: 'Настройте торговые правила, соответствующие ограничениям реального исполнения.'
           },
           6: {
             title: 'Анализ бэктеста и PDF-отчет',
-            img: 'images/step_6.gif',
+            img: 'images/step_6.jpg',
             alt: 'Пример отчета по бэктесту',
             desc: 'После обучения просмотрите комплексный отчет: кривую эквити, просадки, P&L по активам, логи сделок, тепловые карты экспозиции, важность фич и матрицы ошибок. Отчет, написанный ИИ агентами, выделяет сильные стороны, слабости и предлагаемые следующие шаги. Скачивайте PDF отчет, содержащий профессиональную конфигурацию, PnL, alpha, beta и т.д. для комплексного анализа трейдинговой стратегии.',
             meta: 'На этом этапе принимается решение о развертывании обученной модели для живой торговли или продолжении экспериментов.'
           },
           7: {
             title: 'Развертывание для живой торговли (Alpaca)',
-            img: 'images/step_7.gif',
+            img: 'images/step_7.jpg',
             alt: 'Модальное окно развертывания с ключами Alpaca',
             desc: 'Развертывайте обученные модели на Alpaca за секунды. Выберите демо (paper) или живой режим торговли, вставьте ваш API-key и secret-key Alpaca (хранится безопасно) и нажмите Развернуть. Платформа начнет торговлю на основе обученной модели за вас, так что вы можете мониторить производительность вместо постоянного контроля ордеров.',
             meta: 'Безопасность: API-ключи зашифрованы; демо (paper) режим торговли включен по умолчанию.'
@@ -995,56 +877,56 @@
       return {
         0: {
           title: 'Personalized onboarding',
-          img: 'images/step_0.gif',
+          img: 'images/step_0.jpg',
           alt: 'Onboarding questions preview',
           desc: `At registration users answer a short set of thoughtfully designed questions: trading goals (growth, income, preservation), preferred markets, experience level, risk tolerance, and time horizon. TradiQuant uses these answers to build a personalized recommendation profile that influences model suggestions, feature presets, and hyperparameter search spaces. This ensures the first model you train is aligned with your objectives—saving time and lowering the barrier to meaningful experiments.`,
           meta: 'Why it matters: Gets you started with models & settings that match your goals.'
         },
         1: {
           title: 'Choose an ML model',
-          img: 'images/step_1.gif',
+          img: 'images/step_1.jpg',
           alt: 'Model selection screen',
           desc: `Select from a curated library: classical ML (XGBoost/LightGBM), sequence models (LSTM), transformer-based architectures for time series, and ensemble combinations. Each model card contains expected latency, sample use-cases, and recommended presets. Based on your onboarding profile we highlight the models most likely to match your strategy and risk profile.`,
           meta: 'Tip: Start with recommended presets if you are unsure.'
         },
         2: {
           title: 'Select assets or a portfolio',
-          img: 'images/step_2.gif',
+          img: 'images/step_2.jpg',
           alt: 'Portfolio selection',
           desc: `Select individual stocks or cryptocurrencies, import a custom list, or start instantly with one of our curated portfolios (Momentum, Balanced, Crypto Basket, Value). The platform validates tickers and data availability, highlights diversification issues, and suggests rebalance intervals. Our personalized AI assistant recommends assets tailored to your objectives and risk profile.`,
           meta: 'Pro feature: Portfolio validation & diversification suggestions.'
         },
         3: {
           title: 'Choose features (presets or custom)',
-          img: 'images/step_3.gif',
+          img: 'images/step_3.jpg',
           alt: 'Feature selection',
           desc: `Choose from 50+ engineered features: moving averages at different windows, RSI, volume spikes, volatility bands, macro indicators, and custom aggregated signals. Each feature includes a short explanation and recommended lag/aggregation to avoid lookahead bias.`,
           meta: 'Reminder: Feature choice strongly impacts model behavior and interpretability.'
         },
         4: {
           title: 'Hyperparameters — manual or AI-assisted',
-          img: 'images/step_4.gif',
+          img: 'images/step_4.jpg',
           alt: 'Hyperparameters UI',
           desc: `Every model exposes relevant hyperparameters. Use quick presets (fast/robust/exploratory), tune parameters manually, or ask the AI Assistant to propose a hyperparameter set tuned to your account profile and selected assets. The AI suggestion considers historical performance patterns and your risk tolerance to recommend a practical starting point.`,
           meta: 'AI Assist: Saves hours of manual tuning and prevents obvious overfitting.'
         },
         5: {
           title: 'Strategy & backtest settings',
-          img: 'images/step_5.gif',
+          img: 'images/step_5.jpg',
           alt: 'Strategy and backtest settings',
           desc: `Set execution rules: number of concurrent long/short positions, position-sizing rules (fixed, fractional, Kelly), capital for backtest, commission/slippage assumptions, and max drawdown limits. Choose AI Agents to run diagnostics over backtest outputs — they will point out structural issues like over-concentration, lookahead leakage, or data-snooping.`,
           meta: 'Configure trading rules that match real-world execution constraints.'
         },
         6: {
           title: 'Backtest analysis & PDF report',
-          img: 'images/step_6.gif',
+          img: 'images/step_6.jpg',
           alt: 'Backtest report example',
           desc: `After training, review a comprehensive report: equity curve, drawdowns, per-asset P&L, trade-level logs, exposure heatmaps, feature importance, and confusion matrices. An AI-written executive summary highlights strengths, weaknesses, and suggested next steps. Export a professional PDF containing the config, model hash, seed, and full logs for compliance or investor review.`,
           meta: 'Includes reproducibility info: data snapshot, seed, model checkpoint.'
         },
         7: {
           title: 'Deploy to live trading (Alpaca)',
-          img: 'images/step_7.gif',
+          img: 'images/step_7.jpg',
           alt: 'Deploy modal with Alpaca keys',
           desc: `Deploy trained models to Alpaca in seconds. Choose paper or live mode, paste your Alpaca API key & secret (stored securely), set runtime risk limits, and press Deploy. The platform manages order execution, monitoring, logging, and a safety circuit breaker (max intraday loss), so you can monitor performance instead of babysitting orders.`,
           meta: 'Security: API keys are encrypted; paper mode enabled by default.'
@@ -1054,6 +936,39 @@
 
     const tq = (sel, ctx=document) => ctx.querySelector(sel);
     const tqAll = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+    // focus trap (минимал)
+    function trapFocus(container) {
+      const focusable = 'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])';
+      const nodes = Array.from(container.querySelectorAll(focusable)).filter(n => !n.disabled);
+      if (!nodes.length) return () => {};
+      let first = nodes[0], last = nodes[nodes.length-1];
+      function keyListener(e){
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+      document.addEventListener('keydown', keyListener);
+      // возвращаем функцию для очистки
+      return () => document.removeEventListener('keydown', keyListener);
+    }
+
+    // Использование при открытии/закрытии
+    let releaseTrap = null;
+    function openTQModal(stepIndex, triggerEl) {
+      // ...ваш существующий код открытия
+      releaseTrap = trapFocus(modal);
+      // пометить остальные секции как не-доступные
+      document.querySelectorAll('body > *:not(#tq-modal)').forEach(el => el.inert = true);
+    }
+    function closeTQModal() {
+      // ...ваш существующий код закрытия
+      if (releaseTrap) releaseTrap();
+      document.querySelectorAll('body > *:not(#tq-modal)').forEach(el => el.inert = false);
+    }
 
     tqAll('.tq-step-card').forEach(card=>{
       card.addEventListener('keydown', e=>{
