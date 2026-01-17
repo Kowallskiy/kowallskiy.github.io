@@ -886,3 +886,99 @@ body {
     max-width: 98vw;
   }
 } 
+
+/* CTA под видео */
+.video-cta {
+  margin: 18px auto 34px;
+  /* Ограничиваем ширину тем же значением, что у видео (или чуть шире) */
+  max-width: 960px;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center; /* <- важное: центрируем содержимое */
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* Primary — увеличенная, крупная, более заметная */
+.try-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;       /* -> больше по вертикали и горизонтали */
+  min-width: 420px;         /* -> гарантированная минимальная ширина на десктопе */
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--tq-accent), #2548ff);
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 16px 40px rgba(58,94,255,0.16);
+  border: none;
+  transition: transform .14s ease, box-shadow .14s ease, opacity .12s ease;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 17px;         /* -> чуть крупнее текста */
+  text-align: center;
+  justify-content: center;
+}
+
+/* Иконка немного уменьшена, чтобы текст был визуально центровой */
+.try-demo-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* hover / focus */
+.try-demo-btn:hover,
+.try-demo-btn:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(58,94,255,0.2);
+  outline: none;
+}
+
+.try-demo-btn:focus-visible {
+  outline: 3px solid rgba(58,94,255,0.14);
+  outline-offset: 4px;
+}
+
+/* secondary stays small but centered */
+.try-demo-secondary {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--tq-text);
+  border: 1px solid rgba(15,23,36,0.06);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* hidden state when video plays */
+.try-demo-btn.hidden,
+.try-demo-secondary.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+}
+
+/* Mobile: переразметка — кнопка становится full-width и уменьшаем min-width */
+@media (max-width: 640px) {
+  .video-cta {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    padding: 0 12px;
+  }
+  .try-demo-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 18px;
+    font-size: 16px;
+  }
+  .try-demo-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
